@@ -1,11 +1,11 @@
 <?php
 /* ================== CRUD USUARIO ================== */
 
-function insertUsuario($conn, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio){
-    $sql = "INSERT INTO usuario (nombre, telefono, email, usuario, contrasena, privilegio) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+function insertUsuario($conn, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso){
+    $sql = "INSERT INTO usuario (nombre, telefono, email, usuario, contrasena, privilegio, primerIngreso) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssi", $nombre, $telefono, $email, $usuario, $contrasena, $privilegio);
+    $stmt->bind_param("sssssii", $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso);
     if ($stmt->execute()){
         $stmt->close();
         return true;
@@ -33,12 +33,12 @@ function getUsuarios($conn){
     return $conn->query($sql);
 }
 
-function updateUsuario($conn, $id, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio){
+function updateUsuario($conn, $id, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso){
     $sql = "UPDATE usuario 
-            SET nombre = ?, telefono = ?, email = ?, usuario = ?, contrasena = ?, privilegio = ? 
+            SET nombre = ?, telefono = ?, email = ?, usuario = ?, contrasena = ?, privilegio = ?, primerIngreso = ? 
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssii", $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $id);
+    $stmt->bind_param("sssssiii", $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso, $id);
     if ($stmt->execute()){
         $stmt->close();
         return true;
@@ -152,5 +152,17 @@ function deletePropiedad($conn, $id){
     }
     $stmt->close();
     return false;
+}
+
+/* ================== Rol y Tipo Propiedades ================== */
+
+function getCategorias($conn){
+    $sql = "SELECT * FROM tipo_alquiler ORDER BY id ASC";
+    return $conn->query($sql);
+}
+
+function getRoles($conn){
+    $sql = "SELECT * FROM privilegio ORDER BY id ASC";
+    return $conn->query($sql);
 }
 ?>

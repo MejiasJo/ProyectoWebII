@@ -1,4 +1,66 @@
 <?php
+
+/* ================== Introduccion ================== */
+
+function getConfig($conn) {
+    $sql = "SELECT * FROM configuracion WHERE id=1 LIMIT 1";
+    $result = $conn->query($sql);
+    if ($result && $row = $result->fetch_assoc()) {
+        return $row;
+    }
+    return [];
+}
+
+function updateConfig($conn, $data, $files) {
+    $uploadDir = __DIR__ . '/../uploads/';
+    if (!is_dir($uploadDir)) mkdir($uploadDir, 0775, true);
+
+    $save = function($key) use ($files, $uploadDir) {
+        if (!isset($files[$key]) || $files[$key]['error'] !== UPLOAD_ERR_OK) return null;
+        $ext = strtolower(pathinfo($files[$key]['name'], PATHINFO_EXTENSION) ?: 'bin');
+        $name = $key . '_' . date('Ymd_His') . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+        if (!move_uploaded_file($files[$key]['tmp_name'], $uploadDir.$name)) return null;
+        return $name;
+    };
+
+    $actual = getConfig($conn);
+
+    $tema            = $data['tema'] ?? ($actual['tema'] ?? 'azul-amarillo-gris');
+    $icono_principal = $save('icono_principal') ?? ($actual['icono_principal'] ?? null);
+    $icono_blanco    = $save('icono_blanco')    ?? ($actual['icono_blanco'] ?? null);
+    $banner_imagen   = $save('banner_imagen')   ?? ($actual['banner_imagen'] ?? null);
+    $banner_mensaje  = trim($data['banner_mensaje'] ?? ($actual['banner_mensaje'] ?? ''));
+    $quienes_somos   = trim($data['quienes_somos'] ?? ($actual['quienes_somos'] ?? ''));
+    $quienes_img     = $save('quienes_img')     ?? ($actual['quienes_img'] ?? null);
+    $facebook        = trim($data['facebook'] ?? ($actual['facebook'] ?? ''));
+    $instagram       = trim($data['instagram'] ?? ($actual['instagram'] ?? ''));
+    $tiktok          = trim($data['tiktok'] ?? ($actual['tiktok'] ?? ''));
+    $direccion       = trim($data['direccion'] ?? ($actual['direccion'] ?? ''));
+    $telefono        = trim($data['telefono'] ?? ($actual['telefono'] ?? ''));
+    $email           = trim($data['email'] ?? ($actual['email'] ?? ''));
+
+    $sql = "UPDATE configuracion SET
+                tema=?, icono_principal=?, icono_blanco=?,
+                banner_imagen=?, banner_mensaje=?,
+                quienes_somos=?, quienes_img=?,
+                facebook=?, instagram=?, tiktok=?,
+                direccion=?, telefono=?, email=?
+            WHERE id=1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "sssssssssssss",
+        $tema, $icono_principal, $icono_blanco,
+        $banner_imagen, $banner_mensaje,
+        $quienes_somos, $quienes_img,
+        $facebook, $instagram, $tiktok,
+        $direccion, $telefono, $email
+    );
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}
+
+
 /* ================== CRUD USUARIO ================== */
 
 function insertUsuario($conn, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio){

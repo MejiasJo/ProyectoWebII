@@ -19,10 +19,10 @@ $paleta = $tema === 'blanco-gris'
   ? ['bg'=>'#f2f2f2','fg'=>'#333','prim'=>'#939597','sec'=>'#e9ecef','dark'=>'#222']
   : ['bg'=>'#e9ecf4','fg'=>'#091337','prim'=>'#00699e','sec'=>'#c1d72e','dark'=>'#091337'];
 
-$logoColor   = !empty($cfg['icono_blanco'])    ? 'uploads/'.$cfg['icono_blanco']    : null;
-$logoNormal  = !empty($cfg['icono_principal']) ? 'uploads/'.$cfg['icono_principal'] : null;
-$bannerImg   = !empty($cfg['banner_imagen'])   ? 'uploads/'.$cfg['banner_imagen']   : 'uploads/banner_demo.jpg';
-$aboutImg    = !empty($cfg['quienes_img'])     ? 'uploads/'.$cfg['quienes_img']     : 'uploads/about_demo.jpg';
+$logoColor   = !empty($cfg['icono_blanco'])    ? 'uploads/'.$cfg['icono_blanco']    : 'uploads/';
+$logoNormal  = !empty($cfg['icono_principal']) ? 'uploads/'.$cfg['icono_principal'] : 'uploads/';
+$bannerImg   = !empty($cfg['banner_imagen'])   ? 'uploads/'.$cfg['banner_imagen']   : 'uploads/';
+$aboutImg    = !empty($cfg['quienes_img'])     ? 'uploads/'.$cfg['quienes_img']     : 'uploads/';
 $mensaje     = $cfg['banner_mensaje'] ?? 'PERMITENOS AYUDARTE A CUMPLIR TUS SUEÑOS';
 ?>
 <!doctype html>
@@ -32,7 +32,7 @@ $mensaje     = $cfg['banner_mensaje'] ?? 'PERMITENOS AYUDARTE A CUMPLIR TUS SUE�
   <title>UTN Solutions Real State</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php if($logoNormal): ?><link rel="icon" href="<?= htmlspecialchars($logoNormal) ?>"><?php endif; ?>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/index.css">
   <style>
     :root{
       --bg: <?= $paleta['bg'] ?>; --fg: <?= $paleta['fg'] ?>; --prim: <?= $paleta['prim'] ?>; --sec: <?= $paleta['sec'] ?>; --dark: <?= $paleta['dark'] ?>;
@@ -79,7 +79,7 @@ $mensaje     = $cfg['banner_mensaje'] ?? 'PERMITENOS AYUDARTE A CUMPLIR TUS SUE�
 </header>
 
 <!-- HERO -->
-<section class="hero" style="--hero:url('<?= htmlspecialchars($bannerImg) ?>')">
+<section class="hero" style="background-image: url('<?= htmlspecialchars($bannerImg) ?>')">
   <div class="overlay"></div>
   <h1><?= htmlspecialchars(mb_strtoupper($mensaje)) ?></h1>
 </section>
@@ -108,7 +108,7 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
 </section>
 
 <footer class="footer">
-  <small>© <?= date('Y') ?> — <a href="admin/personalizar.php">Personalizar</a></small>
+  <small>© <?= date('Y') ?> — <a href="admin/perzonalizar.php">Personalizar</a></small>
 </footer>
 
 </body>

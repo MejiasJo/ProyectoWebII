@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config/consultasDB.php';
 require_once __DIR__ . '/../config/conexion.php';
-require_once __DIR__ . '../includes/verificacionrol.php';
+require_once __DIR__ . '/../includes/verificacionrol.php';
 session_start();
 if (!isAdmin()) {
     header('Location: ../login.php');
@@ -38,6 +38,7 @@ $cfg = getConfig($conn);
     </style>
 </head>
 <body>
+    <button><a href="./dashboard.php">Volver</a></button>
     <h1>Personalizar Página de Inicio</h1>
     <?php if($msg): ?>
         <div class="msg"><?= htmlspecialchars($msg) ?></div>

@@ -314,3 +314,146 @@ body {
   font-weight: bold;
   z-index: 2;
 }
+
+#destacadas, #alquileres, #ventas{
+  max-width: 1200px;
+  margin: 2.5em auto;
+  padding: 0 1rem;
+}
+
+#destacadas h2, #alquileres h2, #ventas h2{
+  font-size: 2rem;
+  text-align: center;
+  color: var(--prim, #00699e);
+  margin-bottom: 1rem;
+  letter-spacing: .5px;
+}
+
+/* Grilla responsive */
+#destacadas .grid, #alquileres .grid, #ventas .grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Tarjeta */
+#destacadas .card, #alquileres .card, #ventas .card{
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.08);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  transition: transform .22s ease, box-shadow .22s ease;
+  border: 1px solid rgba(0,0,0,.04);
+}
+
+#destacadas .card:hover, #alquileres .card:hover, #ventas .card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.12);
+}
+
+/* Imagen */
+#destacadas .card img, #alquileres .card img, #ventas .card img{
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  display: block;
+  transition: transform .35s ease, filter .35s ease;
+  filter: saturate(1.02) contrast(1.01);
+}
+#destacadas .card:hover img, #alquileres .card:hover img, #ventas .card:hover img{
+  transform: scale(1.03);
+  filter: saturate(1.15) contrast(1.04);
+}
+
+/* Contenido */
+#destacadas .card h3, #alquileres .card h3, #ventas .card h3{
+  font-size: 1.12rem;
+  line-height: 1.3;
+  margin: .85rem 1rem .35rem;
+  color: var(--dark, #091337);
+}
+#destacadas .card p, #alquileres .card p, #ventas .card p{
+  margin: 0 .95rem .65rem;
+  color: #4a4f62;
+}
+/* Descripción: 3 líneas */
+#destacadas .card p:first-of-type,
+#alquileres .card p:first-of-type,
+#ventas .card p:first-of-type{
+  display: -webkit-box;
+  /* //-webkit-line-clamp: 3; */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3.6em;
+}
+
+/* Precio si existe */
+#destacadas .card p strong,
+#alquileres .card p strong,
+#ventas .card p strong{
+  color: var(--prim, #00699e);
+  font-size: 1.05rem;
+}
+
+/* Botón Ver más */
+.more-wrap{ text-align:center; margin-top: .5rem; }
+.more-btn{
+  background: var(--prim, #00699e);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: .6rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 105, 158, .24);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.more-btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0, 105, 158, .28); }
+
+/* Limitar a 3 tarjetas inicialmente */
+#destacadas .grid .card:nth-child(n+4),
+#alquileres .grid .card:nth-child(n+4),
+#ventas .grid .card:nth-child(n+4){
+  display: none;
+}
+
+/* Cuando la sección está expandida, mostrar todas */
+#destacadas.expanded .grid .card,
+#alquileres.expanded .grid .card,
+#ventas.expanded .grid .card{
+  display: flex !important;
+}
+
+/* Badges por sección (opcional) */
+#destacadas .card::before,
+#alquileres .card::before,
+#ventas .card::before{
+  content: "";
+  position: absolute;
+  top: 12px; left: 12px;
+  padding: .28rem .6rem;
+  font-size: .78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  letter-spacing: .4px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+#destacadas .card{ border-top: 4px solid #fca311; }
+#destacadas .card::before{ content:"⭐ Destacada"; background: linear-gradient(135deg,#ffd166,#fca311); color:#432a00; }
+#alquileres .card{ border-top: 4px solid var(--prim, #00699e); }
+#alquileres .card::before{ content:"Alquiler"; background: var(--prim,#00699e); color:#fff; }
+#ventas .card{ border-top: 4px solid var(--sec, #c1d72e); }
+#ventas .card::before{ content:"Venta"; background: var(--sec,#c1d72e); color: var(--dark,#091337); }
+
+/* Responsive */
+@media (max-width: 640px){
+  #destacadas h2, #alquileres h2, #ventas h2{ font-size: 1.5rem; }
+  #destacadas .grid, #alquileres .grid, #ventas .grid{
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

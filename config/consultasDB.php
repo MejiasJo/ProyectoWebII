@@ -124,19 +124,19 @@ function deleteUsuario($conn, $id){
 /* ================== LOGING USUARIO ================== */
 
 function loginUsuario($conn, $usuario, $contrasena){
-    $sql = "SELECT u.*, p.nombre AS privilegio_nombre 
-            FROM usuario u
-            INNER JOIN privilegio p ON u.privilegio = p.id
-            WHERE u.usuario = ? LIMIT 1";
+    $sql = "SELECT * FROM usuario WHERE usuario = ? LIMIT 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    if ($row = $result->fetch_assoc()) {
+    $row = $result->fetch_assoc();
+    echo "Usuario encontrado: "; var_dump($row); echo "<br>";
+    echo "Contraseña ingresada: " . $contrasena . "<br>";
+    if ($row) {
         if (password_verify($contrasena, $row['contrasena'])) {
             return $row;
         }
+        echo "Contraseña no coincide<br>";
     }
     return false;
 }

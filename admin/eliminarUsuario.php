@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '../config/conexion.php';
-require_once __DIR__ . '../config/consultasDB.php';
-require_once __DIR__ . '../includes/alert.php';
-require_once __DIR__ . '../includes/verificacionrol.php';
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../config/consultasDB.php';
+require_once __DIR__ . '/../includes/verificacionrol.php';
 session_start();
 if (!isAdmin()) {
     header('Location: ../login.php');
@@ -11,14 +10,13 @@ if (!isAdmin()) {
 $conn = conectar();
 if (getUsuario($conn, $_GET['id'])->num_rows > 0) {
     if(deleteUsuario($conn, $_GET['id'])){
-        alertMenssage("Usuario eliminado exitosamente", "success");
+        header('Location: ./usuarios.php?alert=success&message=' . urlencode('Usuario eliminado exitosamente'));
     } else {
-        alertMenssage("Error al eliminar el usuario", "danger");
+        header('Location: ./usuarios.php?alert=danger&message=' . urlencode('Error al eliminar el usuario'));
     }
 } else {
-    alertMenssage("Usuario no encontrado", "danger");
+    header('Location: ./usuarios.php?alert=danger&message=' . urlencode('Usuario no encontrado'));
 }
-
-header('Location: ./usuarios.php');
+exit();
 
 ?>

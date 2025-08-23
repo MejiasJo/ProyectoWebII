@@ -38,6 +38,7 @@ $cfg = getConfig($conn);
     </style>
 </head>
 <body>
+    <button><a href="./dashboard.php">Volver</a></button>
     <h1>Personalizar Página de Inicio</h1>
     <?php if($msg): ?>
         <div class="msg"><?= htmlspecialchars($msg) ?></div>

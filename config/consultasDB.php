@@ -95,12 +95,26 @@ function getUsuarios($conn){
     return $conn->query($sql);
 }
 
-function updateUsuario($conn, $id, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso){
+function updateUsuarioComplento($conn, $id, $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso){
     $sql = "UPDATE usuario 
             SET nombre = ?, telefono = ?, email = ?, usuario = ?, contrasena = ?, privilegio = ?, primerIngreso = ? 
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssiii", $nombre, $telefono, $email, $usuario, $contrasena, $privilegio, $primerAcceso, $id);
+    if ($stmt->execute()){
+        $stmt->close();
+        return true;
+    }
+    $stmt->close();
+    return false;
+}
+
+function updateUsuarioSinPass($conn, $id, $nombre, $telefono, $email, $usuario, $privilegio){
+    $sql = "UPDATE usuario 
+            SET nombre = ?, telefono = ?, email = ?, usuario = ?, privilegio = ? 
+            WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssii", $nombre, $telefono, $email, $usuario, $privilegio, $id);
     if ($stmt->execute()){
         $stmt->close();
         return true;
@@ -130,13 +144,10 @@ function loginUsuario($conn, $usuario, $contrasena){
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
-    echo "Usuario encontrado: "; var_dump($row); echo "<br>";
-    echo "Contraseña ingresada: " . $contrasena . "<br>";
     if ($row) {
         if (password_verify($contrasena, $row['contrasena'])) {
             return $row;
         }
-        echo "Contraseña no coincide<br>";
     }
     return false;
 }

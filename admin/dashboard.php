@@ -17,6 +17,7 @@ if (!isAdmin()) {
 
 <body>
     <div class="container">
+        
         <h1>Dashboard</h1>
         <h2>Bienvenido admin <?php echo $_SESSION['usuario_nombre']; ?>!</h2>
         <section class="cards-container">
@@ -41,6 +42,7 @@ if (!isAdmin()) {
 
             </article>
         </section>
+        <button><a href="../index.php">↩ Volver</a></button>
     </div>
 </body>
 

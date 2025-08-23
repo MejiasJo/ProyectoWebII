@@ -1,8 +1,7 @@
 <?php
-session_start();
 function checkSession($pathRedirect)
 {
-    if (!isset($_SESSION['usuario'])) {
+    if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario']) || !isset($_SESSION['privilegio']) || empty($_SESSION['privilegio'])) {
         header('Location: ' . $pathRedirect);
         exit();
     }

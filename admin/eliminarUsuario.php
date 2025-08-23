@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '../config/conexion.php';
-require_once __DIR__ . '../config/consultasDB.php';
-require_once __DIR__ . '../includes/alert.php';
-require_once __DIR__ . '../includes/verificacionrol.php';
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../config/consultasDB.php';
+require_once __DIR__ . '/../includes/alert.php';
+require_once __DIR__ . '/../includes/verificacionrol.php';
 session_start();
 if (!isAdmin()) {
     header('Location: ../login.php');

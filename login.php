@@ -46,17 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login']) && $_POST['lo
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./assets/alert.css">
+    <link rel="stylesheet" href="./assets/login.css">
 </head>
 
 <body>
     <div class="container">
         <form action="" method="post">
-            <h4>Iniciar Sessión</h4>
+            <h4>Iniciar Sesión</h4>
             <label for="user">Usuario:</label>
             <input type="text" name="user" id="user" required>
             <label for="pass">Contraseña:</label>
-            <input type="text" name="pass" id="pass" required>
-            <button type="submit" value="1" name="login"> Iniciar Sessión</button>
+            <input type="password" name="pass" id="pass" required>
+            <button type="submit" value="1" name="login"> Iniciar Sesión</button>
         </form>
     </div>
 </body>

@@ -74,8 +74,8 @@ $mensaje     = $cfg['banner_mensaje'] ?? 'PERMITENOS AYUDARTE A CUMPLIR TUS SUE�
       <input type="text" name="q" placeholder="Buscar…">
       <button type="submit" aria-label="Buscar">🔍</button>
     </form>
-    <div class="user-badge" title="Mi cuenta"><a href="login.php">Iniciar Sessión👤</a></div>
-    <div class="user-badge" title="Mi cuenta"><a href="salir.php">Cerrar Sessión👤</a></div>
+    <div class="user-badge" title="Mi cuenta"><a href="login.php">Iniciar Sesión👤</a></div>
+    <div class="user-badge" title="Mi cuenta"><a href="salir.php">Cerrar Sesión📤</a></div>
   </div>
 </header>
 

@@ -1,8 +1,13 @@
 <?php
-include '../config/conexion.php';
-include '../config/consultasDB.php';
-include '../includes/seguridad.php';
-include '../includes/alert.php';
+require_once __DIR__ . '../config/conexion.php';
+require_once __DIR__ . '../config/consultasDB.php';
+require_once __DIR__ . '../includes/seguridad.php';
+require_once __DIR__ . '../includes/alert.php';
+require_once __DIR__ . '../includes/verificacionrol.php';
+session_start();
+if (!isAdmin()) {
+    header('Location: ../login.php');
+}
 
 $conn = conectar();
 if (getUsuario($conn, $_GET['id'])->num_rows > 0) {
@@ -42,7 +47,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/alert.css">
+    <link rel="stylesheet" href="../assets/alert.css">
 </head>
 
 <body>

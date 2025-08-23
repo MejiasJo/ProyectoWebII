@@ -24,9 +24,37 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `configuracion`
+--
+CREATE TABLE IF NOT EXISTS configuracion (
+  id               TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  tema             ENUM('azul-amarillo-gris','blanco-gris')
+                     NOT NULL DEFAULT 'azul-amarillo-gris',
+  icono_principal  VARCHAR(255) DEFAULT NULL,     -- ruta en /uploads
+  icono_blanco     VARCHAR(255) DEFAULT NULL,     -- ruta en /uploads
+  banner_imagen    VARCHAR(255) DEFAULT NULL,     -- ruta en /uploads
+  banner_mensaje   VARCHAR(150) NOT NULL DEFAULT 'Permítenos ayudarte a cumplir tus sueños',
+  quienes_somos    TEXT DEFAULT NULL,
+  quienes_img      VARCHAR(255) DEFAULT NULL,     -- ruta en /uploads
+  facebook         VARCHAR(255) DEFAULT NULL,     -- URL completa opcional
+  instagram        VARCHAR(255) DEFAULT NULL,
+  tiktok           VARCHAR(255) DEFAULT NULL,
+  direccion        VARCHAR(255) DEFAULT NULL,
+  telefono         VARCHAR(50)  DEFAULT NULL,
+  email            VARCHAR(120) DEFAULT NULL,
+  creado_en        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                  ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--2) Fila inicial (si no existe)
+INSERT INTO configuracion (id) VALUES (1)
+ON DUPLICATE KEY UPDATE id = id;
+
+--
 -- Estructura de tabla para la tabla `privilegio`
 --
-
 CREATE TABLE `privilegio` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL
@@ -76,6 +104,7 @@ CREATE TABLE `tipo_alquiler` (
 INSERT INTO `tipo_alquiler` (`id`, `nombre`) VALUES
 (1, 'alquiler'),
 (2, 'venta');
+
 
 -- --------------------------------------------------------
 

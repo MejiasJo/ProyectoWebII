@@ -32,7 +32,7 @@ if (!isAdmin()) {
             <article class="card">
                 <h3>Gestión Propiedades</h3>
                 <img src="../assets/img/casa.png" alt="">
-                <button><a href="./propiedades.php" class="btn">Ir a Propiedades</a></button>
+                <button><a href="./propiedadAdmin.php" class="btn">Ir a Propiedades</a></button>
 
             </article>
 

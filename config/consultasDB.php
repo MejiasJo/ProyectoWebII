@@ -167,11 +167,11 @@ function verificarContrasena($conn, $id, $contrasena){
 
 /* ================== CRUD PROPIEDADES ================== */
 
-function insertPropiedad($conn, $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub){
-    $sql = "INSERT INTO propiedades (id_tipo, destacada, titulo, agente_id, imagen, descripcion, ubicacion, fecha_pub) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+function insertPropiedad($conn, $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub, $precio){
+    $sql = "INSERT INTO propiedades (id_tipo, destacada, titulo, agente_id, imagen, descripcion, ubicacion, fecha_pub, precio) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iisissss", $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub);
+    $stmt->bind_param("iisissssi", $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub, $precio);
     if ($stmt->execute()){
         $stmt->close();
         return true;
@@ -197,16 +197,16 @@ function getPropiedades($conn){
             FROM propiedades pr
             INNER JOIN tipo_alquiler ta ON pr.id_tipo = ta.id
             INNER JOIN usuario u ON pr.agente_id = u.id
-            ORDER BY pr.id ASC";
+            ORDER BY pr.id DESC";
     return $conn->query($sql);
 }
 
-function updatePropiedad($conn, $id, $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub){
+function updatePropiedad($conn, $id, $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub, $precio){
     $sql = "UPDATE propiedades 
-            SET id_tipo = ?, destacada = ?, titulo = ?, agente_id = ?, imagen = ?, descripcion = ?, ubicacion = ?, fecha_pub = ?
+            SET id_tipo = ?, destacada = ?, titulo = ?, agente_id = ?, imagen = ?, descripcion = ?, ubicacion = ?, fecha_pub = ?, precio = ?
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iisissssi", $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub, $id);
+    $stmt->bind_param("iisissssii", $id_tipo, $destacada, $titulo, $agente_id, $imagen, $descripcion, $ubicacion, $fecha_pub,$precio, $id);
     if ($stmt->execute()){
         $stmt->close();
         return true;

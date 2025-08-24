@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $descripcion = trim($_POST['descripcion'] ?? '');
   $ubicacion   = trim($_POST['ubicacion'] ?? '');
   $fecha_pub   = $_POST['fecha_pub'] ?? date('Y-m-d');
+  $precio      = (float)($_POST['precio'] ?? 0);
 
   $errores = [];
   if ($titulo === '')        $errores[] = "El título es obligatorio.";
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($descripcion === '')   $errores[] = "La descripción es obligatoria.";
   if ($ubicacion === '')     $errores[] = "La ubicación es obligatoria.";
   if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_pub)) $errores[] = "Fecha inválida (YYYY-MM-DD).";
+  if ($precio < 0)           $errores[] = "El precio no puede ser negativo.";
 
   // Verificar FK de tipo
   $existeTipo = $conn->prepare("SELECT 1 FROM tipo_alquiler WHERE id=?");
@@ -76,11 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (empty($errores)) {
     $sql = "INSERT INTO propiedades
-                (id_tipo, destacada, titulo, agente_id, imagen, descripcion, ubicacion, fecha_pub)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                (id_tipo, destacada, titulo, agente_id, imagen, descripcion, ubicacion, fecha_pub, precio)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-      "iisissss",
+      "iisissssi",
       $id_tipo,
       $destacada,
       $titulo,
@@ -88,16 +90,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $rutaImagen,
       $descripcion,
       $ubicacion,
-      $fecha_pub
+      $fecha_pub,
+      $precio
     );
 
     if ($stmt->execute()) {
       $nuevoId = $stmt->insert_id;
       $msg = "✅ Propiedad creada (ID: $nuevoId).";
-      // Si quieres, redirige:
-      // header("Location: ../propiedad.php?id=".$nuevoId); exit;
+    
     } else {
-      // No sobreescribas el éxito: solo entra aquí cuando falle
+     
       $msg = "❌ Error al insertar: " . $stmt->error;
     }
     $stmt->close();
@@ -204,6 +206,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div>
+      <label>Precio *</label>
+      <input type="number" name="precio" value="0" min="0" step="0.01" required>
+
+    <div>
       <label>Imagen *</label>
       <input type="file" name="imagen" accept="image/*">
     </div>
@@ -238,6 +244,7 @@ if ($resultado->num_rows > 0): ?>
         <th>Destacada</th>
         <th>Ubicación</th>
         <th>Fecha</th>
+        <th>precio</th>
         <th>Imagen</th>
         <th>Acciones</th>
       </tr>
@@ -252,6 +259,7 @@ if ($resultado->num_rows > 0): ?>
           <td><?= $row['destacada'] ? '✅' : '❌' ?></td>
           <td><?= htmlspecialchars($row['ubicacion']) ?></td>
           <td><?= htmlspecialchars($row['fecha_pub']) ?></td>
+          <td><?= htmlspecialchars($row['precio']) ?></td>
           <td>
             <img src="../<?= htmlspecialchars($row['imagen']) ?>" alt="img" style="width:80px;height:60px;object-fit:cover">
           </td>

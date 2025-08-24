@@ -2,15 +2,13 @@
 require_once __DIR__ . '/config/conexion.php';
 $conn = conectar();
 
-// Obtener id desde URL
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id <= 0) {
     die("❌ Propiedad no válida");
 }
 
-// Consulta con JOIN a usuario y tipo_alquiler
 $sql = "
-  SELECT p.id, p.titulo, p.descripcion, p.ubicacion, p.fecha_pub,
+  SELECT p.id, p.titulo, p.descripcion, p.ubicacion, p.fecha_pub, p.precio,
          p.imagen,
          u.nombre AS agente, u.telefono AS agente_tel, u.email AS agente_email,
          t.nombre AS tipo
@@ -57,6 +55,7 @@ if (!$prop) {
         Tipo: <?= htmlspecialchars(ucfirst($prop['tipo'])) ?> |
         Publicado el <?= htmlspecialchars($prop['fecha_pub']) ?> |
         Ubicación: <?= htmlspecialchars($prop['ubicacion']) ?>
+        Precio: <?= htmlspecialchars($prop['precio']) ?> €
       </p>
       <div class="grid">
         <div>

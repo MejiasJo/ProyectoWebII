@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $descripcion = trim($_POST['descripcion'] ?? $prop['descripcion']);
   $ubicacion   = trim($_POST['ubicacion'] ?? $prop['ubicacion']);
   $fecha_pub   = $_POST['fecha_pub'] ?? $prop['fecha_pub'];
+  $precio      = (float)($_POST['precio'] ?? $prop['precio']);
 
   $errores = [];
   if ($titulo==='')      $errores[]="El título es obligatorio.";
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($descripcion==='') $errores[]="La descripción es obligatoria.";
   if ($ubicacion==='')   $errores[]="La ubicación es obligatoria.";
   if (!preg_match('/^\d{4}-\d{2}-\d{2}$/',$fecha_pub)) $errores[]="Fecha inválida (YYYY-MM-DD).";
+  if ($precio < 0)       $errores[]="El precio no puede ser negativo.";
 
   // Verificar FK
   $chk = $conn->prepare("SELECT 1 FROM tipo_alquiler WHERE id=?"); $chk->bind_param("i",$id_tipo); $chk->execute(); $chk->store_result();
@@ -78,11 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (empty($errores)) {
     $sql = "UPDATE propiedades
-            SET id_tipo=?, destacada=?, titulo=?, agente_id=?, imagen=?, descripcion=?, ubicacion=?, fecha_pub=?
+            SET id_tipo=?, destacada=?, titulo=?, agente_id=?, imagen=?, descripcion=?, ubicacion=?, fecha_pub=?, precio=?
             WHERE id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iisissssi",
-      $id_tipo, $destacada, $titulo, $agente_id, $rutaImagen, $descripcion, $ubicacion, $fecha_pub, $id
+    $stmt->bind_param("iisissssii",
+      $id_tipo, $destacada, $titulo, $agente_id, $rutaImagen, $descripcion, $ubicacion, $fecha_pub, $precio, $id
     );
     if ($stmt->execute()) {
       $msg = "✅ Propiedad actualizada.";
@@ -172,6 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label>Fecha de publicación *</label>
       <input type="date" name="fecha_pub" value="<?= htmlspecialchars($prop['fecha_pub']) ?>" required>
     </div>
+
+    <div>
+      <label>Precio *</label>
+      <input type="number" name="precio" value="<?= htmlspecialchars($prop['precio']) ?>" min="0" step="0.01" required>
 
     <div>
       <label>Reemplazar imagen</label>

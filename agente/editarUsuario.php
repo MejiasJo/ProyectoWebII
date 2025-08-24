@@ -3,14 +3,15 @@ require_once __DIR__ . '/../config/conexion.php';
 require_once __DIR__ . '/../config/consultasDB.php';
 require_once __DIR__ . '/../includes/seguridad.php';
 require_once __DIR__ . '/../includes/verificacionrol.php';
+require_once __DIR__ . '/../includes/alert.php';
 session_start();
-if (!isAdmin()) {
+if (!isAngente()) {
     header('Location: ../login.php');
 }
 
 $conn = conectar();
-if (getUsuario($conn, $_GET['id'])->num_rows > 0) {
-    $usuario = getUsuario($conn, $_GET['id'])->fetch_assoc();
+if (getUsuario($conn, $_SESSION['usuario_id'])->num_rows > 0) {
+    $usuario = getUsuario($conn, $_SESSION['usuario_id'])->fetch_assoc();
 } else {
     alertMenssage("Usuario no encontrado", "danger");
     header('Location: ./usuarios.php');
@@ -18,7 +19,7 @@ if (getUsuario($conn, $_GET['id'])->num_rows > 0) {
 $conn->close();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST['actulizar'] == 1) {
-    $id = $_GET['id'];
+    $id = $_SESSION['usuario_id'];
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
@@ -30,19 +31,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
     $_POST['actulizar'] = 0;
     if (!empty($_POST['pass'])) {
         $pass = encryptPassword($_POST['pass']);
-        $resultado = updateUsuarioComplento($conn, $id, $nombre, $telefono, $email, $user, $pass, $rol, 1);
+        $resultado = updateUsuarioComplento($conn, $id, $nombre, $telefono, $email, $user, $pass, $rol, 0);
     } else {
         $resultado = updateUsuarioSinPass($conn, $id, $nombre, $telefono, $email, $user, $rol);
     }
 
-    $mensaje = $resultado ? 'Usuario actualizado exitosamente' : 'Error al actualizar el usuario';
+    $mensaje = $resultado ? 'Datos actualizados exitosamente' : 'Error al actualizar los datos';
     $tipo = $resultado ? 'success' : 'danger';
     
-    header('Location: ./usuarios.php?alert=' . $tipo . '&message=' . urlencode($mensaje));
-    exit();
+    alertMenssage($mensaje, $tipo);
 }
 
-?>
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../assets/alert.css">
     <link rel="stylesheet" href="../assets/usuarios.css">
 </head>
 
@@ -58,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
     <div class="container">
         <section class="bloque">
             <form action="" method="post">
-                <h4>Actulizar Usuario</h4>
+                <h4>Actulizar Datos</h4>
                 <label for="nombre">Nombre Completo:</label>
                 <input type="text" name="nombre" id="nombre" value="<?= $usuario['nombre'] ?>" required>
                 <label for="telefono">Telefono:</label>
@@ -87,8 +88,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
                         while ($row = $resultado->fetch_assoc()) {
                             if ($row['id'] == $usuario['privilegio']) {
                                 echo "<option default value='" . $row['id'] . "' selected>" . $row['nombre'] . "</option>";
-                            } else {
-                                echo "<option value='" . $row['id'] . "'>" . $row['nombre'] . "</option>";
                             }
                         }
                     } else {
@@ -100,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
                 <button type="submit" value="1" name="actulizar">Actulizar</button>
             </form>
         </section>
-        <button><a href="./usuarios.php">↩ Volver</a></button>
+        <button><a href="./dashboard.php">↩ Volver</a></button>
     </div>
 
     <script>

@@ -1,459 +1,223 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* =======================
+   RESET & VARIABLES
+   ======================= */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Paleta del look (puedes ajustar) */
+  --brand-bg:#0b0f1f;         /* topbar */
+  --brand-deep:#121633;       /* fondo secciones oscuras */
+  --brand-surface:#1a1e43;    /* tarjeta en oscuro */
+  --brand-ink:#e9eaf6;        /* texto sobre oscuro */
+  --brand-gold:#ffd166;       /* acento dorado */
+  --brand-gold-2:#f4c430;     /* dorado secundario */
+  --light-bg:#e9eaee;         /* fondo claro secciones */
+  --light-card:#ffffff;       /* tarjeta en claro */
+  --text-dark:#1f2544;        /* texto principal neutral */
+  --muted:#4a4f62;
+
+  /* Hereda si ya defines estas desde PHP */
+  --bg: var(--light-bg);
+  --fg: var(--text-dark);
+  --prim: var(--brand-surface);
+  --sec: var(--brand-gold);
+  --dark: #0d1330;
+}
+html,body{min-height:100%}
+body{
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 16px/1.6 "Segoe UI",system-ui,Arial,sans-serif;
 }
 
-body {
-  background: var(--bg, #e9ecf4);
-  color: var(--fg, #091337);
-  font-family: 'Segoe UI', Arial, sans-serif;
-  min-height: 100vh;
-  line-height: 1.6;
+/* =======================
+   TOPBAR
+   ======================= */
+.topbar{
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px;
+  background: linear-gradient(180deg, #0c1023 0%, var(--brand-bg) 100%);
+  color:#fff; padding:14px 22px;
+  box-shadow:0 6px 24px rgba(0,0,0,.25);
+}
+.topbar .left{display:flex;align-items:center;gap:18px}
+.logo{height:48px;width:auto;border-radius:6px;background:#fff;padding:4px}
+.brand{font-weight:800;letter-spacing:.5px}
+.social a{display:inline-block;transition:transform .2s,filter .2s;margin-right:8px}
+.social a:hover{transform:scale(1.1);filter:brightness(1.15)}
+.menu{display:flex;align-items:center;gap:.6rem}
+.menu a{
+  color: var(--brand-gold);
+  text-decoration:none; font-weight:800; letter-spacing:.6px;
+  text-transform:uppercase; padding:.2rem .4rem; border-radius:4px;
+}
+.menu a:hover{background:rgba(255,209,102,.15)}
+.menu span{color:var(--brand-gold);opacity:.75}
+.topbar .right{display:flex;align-items:center;gap:12px}
+.search{
+  display:flex;align-items:center;background:#fff;border-radius:22px;
+  padding:2px 8px; box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.search input{border:0;outline:0;padding:.45rem .6rem;background:transparent;color:#222}
+.search button{border:0;background:none;font-size:1.1rem;cursor:pointer;color:#333}
+.user-badge{font-size:1.1rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.35rem .65rem}
+.user-badge a{color:#fff;text-decoration:none}
+
+/* =======================
+   HERO
+   ======================= */
+.hero{
+  position:relative; min-height:420px;
+  background: #0e1230 center/cover no-repeat fixed;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; margin-bottom:36px;
+}
+.hero .overlay{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.hero h1{
+  position:relative; color:#fff; text-transform:uppercase;
+  font-weight:800; font-size:36px; letter-spacing:2px; padding:24px;
+  text-shadow:0 4px 20px rgba(0,0,0,.45);
 }
 
-/* Topbar */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--prim, #00699e);
-  color: #fff;
-  padding: 1.2em 2em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+/* =======================
+   QUIÉNES SOMOS (claro)
+   ======================= */
+.about.card{
+  background:#f3f4f7; color:var(--text-dark);
+  margin: 0 auto 34px; max-width:1100px;
+  border-radius:12px; padding:28px 28px;
+  box-shadow:0 8px 22px rgba(0,0,0,.08);
+}
+.about h2{
+  text-align:center; text-transform:uppercase; letter-spacing:1px;
+  color: var(--brand-deep); margin-bottom:14px; font-size:26px; font-weight:900;
+}
+.about .grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.about .text{flex:2 1 420px;font-size:1.02rem}
+.about .image{flex:1 1 260px;display:flex;align-items:center;justify-content:center}
+.about .image img{max-width:260px;border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.15)}
+.about .contact{list-style:none;margin-top:14px}
+.about .contact strong{color:var(--brand-deep)}
+
+/* =======================
+   SECCIONES DE PROPIEDADES
+   ======================= */
+section{scroll-margin-top:80px}
+
+/* Cabeceras */
+#destacadas h2,#ventas h2,#alquileres h2{
+  text-transform:uppercase; font-weight:900; letter-spacing:1px;
+  text-align:center; margin-bottom:18px; font-size:26px;
 }
 
-.topbar .left {
-  display: flex;
-  align-items: center;
-  gap: 1.5em;
+/* Fondos alternados como en el mock */
+#destacadas, #alquileres{
+  background: var(--brand-deep);
+  color: var(--brand-ink);
+  padding: 48px 0 36px;
+}
+#ventas{
+  background: var(--light-bg);
+  color: var(--text-dark);
+  padding: 48px 0 36px;
 }
 
-.logo {
-  height: 48px;
-  width: auto;
-  border-radius: 8px;
-  background: #fff;
-  padding: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+/* Grids */
+#destacadas .grid,#alquileres .grid,#ventas .grid{
+  max-width:1100px;margin:0 auto; padding: 0 16px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;
 }
 
-.brand {
-  font-size: 1.3em;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: #fff;
+/* Tarjetas base */
+#destacadas .card,#alquileres .card,#ventas .card{
+  border-radius:14px; overflow:hidden; display:flex;flex-direction:column;
+  box-shadow:0 10px 26px rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .22s ease, box-shadow .22s ease;
 }
-
-.social a {
-  display: inline-block;
-  margin-right: 0.5em;
-  vertical-align: middle;
-  transition: transform 0.2s;
-}
-
-.social a:hover {
-  transform: scale(1.15);
-  filter: brightness(1.2);
-}
-
-.menu {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  font-size: 1.08em;
-}
-
-.menu a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.2em 0.6em;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-.menu a:hover {
-  background: var(--sec, #c1d72e);
-  color: var(--dark, #091337);
-}
-
-.menu span {
-  color: #fff;
-  opacity: 0.5;
-}
-
-.topbar .right {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-}
-
-.search {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 20px;
-  padding: 2px 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-}
-
-.search input {
-  border: none;
-  outline: none;
-  padding: 0.4em 0.7em;
-  border-radius: 20px;
-  font-size: 1em;
-  background: transparent;
-  color: var(--fg, #091337);
-}
-
-.search button {
-  background: none;
-  border: none;
-  font-size: 1.1em;
-  cursor: pointer;
-  color: var(--prim, #00699e);
-}
-
-.user-badge {
-  font-size: 1.5em;
-  background: var(--sec, #c1d72e);
-  color: var(--dark, #091337);
-  border-radius: 50%;
-  padding: 0.2em 0.5em;
-  margin-left: 0.5em;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-}
-
-/* HERO */
-.hero {
-  position: relative;
-  min-height: 320px;
-  background: linear-gradient(120deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.15)), var(--hero, #e9ecf4) center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 2em;
-}
-
-.hero .overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
-  z-index: 1;
-}
-
-.hero h1 {
-  position: relative;
-  z-index: 2;
-  font-size: 2.5em;
-  font-weight: bold;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
-  margin: 0;
-  padding: 1.5em 0.5em;
-}
-
-/* About */
-.about.card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-  margin: 2em auto;
-  max-width: 900px;
-  padding: 2em 2.5em;
-}
-
-.about h2 {
-  color: var(--prim, #00699e);
-  font-size: 2em;
-  margin-bottom: 1em;
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-.about .grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2em;
-  align-items: flex-start;
-}
-
-.about .text {
-  flex: 2 1 320px;
-  font-size: 1.1em;
-}
-
-.about .image {
-  flex: 1 1 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.about .image img {
-  max-width: 220px;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-}
-
-.about .contact {
-  margin-top: 1.5em;
-  list-style: none;
-  padding: 0;
-}
-
-.about .contact li {
-  margin-bottom: 0.5em;
-  font-size: 1em;
-}
-
-.about .contact strong {
-  color: var(--prim, #00699e);
-}
-
-/* Footer */
-.footer {
-  background: var(--prim, #00699e);
-  color: #fff;
-  text-align: center;
-  padding: 1.2em 0;
-  margin-top: 3em;
-  font-size: 1em;
-  letter-spacing: 1px;
-}
-
-.footer a {
-  color: var(--sec, #c1d72e);
-  text-decoration: underline;
-  font-weight: 500;
-}
-
-.footer a:hover {
-  color: #fff;
-  background: var(--sec, #c1d72e);
-  border-radius: 4px;
-  padding: 0 4px;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .about.card {
-    padding: 1.2em 1em;
-  }
-
-  .about .grid {
-    flex-direction: column;
-    gap: 1em;
-  }
-
-  .about .image {
-    justify-content: flex-start;
-  }
-
-  .topbar {
-    flex-direction: column;
-    gap: 1em;
-    padding: 1em;
-  }
-
-  .menu {
-    flex-wrap: wrap;
-    gap: 0.3em;
-  }
-}
-
-@media (max-width: 600px) {
-  .about.card {
-    margin: 1em 0.2em;
-    padding: 1em 0.5em;
-  }
-
-  .hero h1 {
-    font-size: 1.3em;
-    padding: 1em 0.2em;
-  }
-
-  .topbar .left,
-  .topbar .right {
-    flex-direction: column;
-    gap: 0.5em;
-  }
-}
-
-.hero {
-  position: relative;
-  text-align: center;
-  padding: 6em 1em;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* opcional: efecto parallax */
-}
-
-/* Capa oscura encima de la imagen para dar contraste */
-.hero .overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* oscuridad para resaltar texto */
-  z-index: 1;
-}
-
-/* Texto encima del overlay */
-.hero h1 {
-  position: relative;
-  color: white;
-  font-size: 2.5em;
-  font-weight: bold;
-  z-index: 2;
-}
-
-#destacadas, #alquileres, #ventas{
-  max-width: 1200px;
-  margin: 2.5em auto;
-  padding: 0 1rem;
-}
-
-#destacadas h2, #alquileres h2, #ventas h2{
-  font-size: 2rem;
-  text-align: center;
-  color: var(--prim, #00699e);
-  margin-bottom: 1rem;
-  letter-spacing: .5px;
-}
-
-/* Grilla responsive */
-#destacadas .grid, #alquileres .grid, #ventas .grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.25rem;
-}
-
-/* Tarjeta */
-#destacadas .card, #alquileres .card, #ventas .card{
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 28px rgba(0,0,0,.08);
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  transition: transform .22s ease, box-shadow .22s ease;
-  border: 1px solid rgba(0,0,0,.04);
-}
-
-#destacadas .card:hover, #alquileres .card:hover, #ventas .card:hover{
+#destacadas .card,#alquileres .card{ background: var(--brand-surface); color: var(--brand-ink); }
+#ventas .card{ background: var(--light-card); color: var(--text-dark); border-color: rgba(0,0,0,.06); }
+#destacadas .card:hover,#alquileres .card:hover,#ventas .card:hover{
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0,0,0,.12);
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 
 /* Imagen */
-#destacadas .card img, #alquileres .card img, #ventas .card img{
-  width: 100%;
-  aspect-ratio: 16/10;
-  object-fit: cover;
-  display: block;
-  transition: transform .35s ease, filter .35s ease;
-  filter: saturate(1.02) contrast(1.01);
-}
-#destacadas .card:hover img, #alquileres .card:hover img, #ventas .card:hover img{
-  transform: scale(1.03);
-  filter: saturate(1.15) contrast(1.04);
+#destacadas .card img,#alquileres .card img,#ventas .card img{
+  width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
 }
 
-/* Contenido */
-#destacadas .card h3, #alquileres .card h3, #ventas .card h3{
-  font-size: 1.12rem;
-  line-height: 1.3;
-  margin: .85rem 1rem .35rem;
-  color: var(--dark, #091337);
+/* Texto */
+#destacadas .card h3,#alquileres .card h3,#ventas .card h3{
+  font-size:1.08rem; font-weight:700; font-style:italic;
+  margin:.85rem 1rem .2rem;
 }
-#destacadas .card p, #alquileres .card p, #ventas .card p{
-  margin: 0 .95rem .65rem;
-  color: #4a4f62;
+#destacadas .card .loc,#alquileres .card .loc,#ventas .card .loc{
+  margin:0 1rem .35rem; font-size:.95rem; color:#b7bfdd;
 }
-/* Descripción: 3 líneas */
-#destacadas .card p:first-of-type,
-#alquileres .card p:first-of-type,
-#ventas .card p:first-of-type{
-  display: -webkit-box;
-  /* //-webkit-line-clamp: 3; */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 3.6em;
+#ventas .card .loc{ color:#2f3b56; }
+#destacadas .card p,#alquileres .card p,#ventas .card p{
+  margin:0 1rem .6rem; color:#d7dbf5;
+}
+#ventas .card p{ color:var(--muted); }
+
+/* Precio en dorado */
+#destacadas .card p strong,#alquileres .card p strong,#ventas .card p strong{
+  color: var(--brand-gold); font-weight:900;
 }
 
-/* Precio si existe */
-#destacadas .card p strong,
-#alquileres .card p strong,
-#ventas .card p strong{
-  color: var(--prim, #00699e);
-  font-size: 1.05rem;
+/* Botón CTA dentro de tarjeta (si lo usas) */
+#destacadas .card a,#alquileres .card a,#ventas .card a{
+  align-self:flex-start; margin: auto 1rem 1rem;
+  text-decoration:none; font-weight:800; letter-spacing:.5px;
+  background:transparent; color:#fff; border:1px solid rgba(255,255,255,.35);
+  padding:.55rem 1rem; border-radius:999px; text-transform:uppercase; font-size:.85rem;
 }
+#ventas .card a{ color:var(--text-dark); border-color:rgba(0,0,0,.25); }
+#destacadas .card a:hover,#alquileres .card a:hover{ background:rgba(255,255,255,.1) }
+#ventas .card a:hover{ background:#f1f2f6 }
 
-/* Botón Ver más */
-.more-wrap{ text-align:center; margin-top: .5rem; }
+/* ===== “Ver más propiedades” (botón de sección) ===== */
+.more-wrap{max-width:1100px;margin:16px auto 0;padding:0 16px;text-align:center}
 .more-btn{
-  background: var(--prim, #00699e);
-  color: #fff;
-  border: none;
-  border-radius: 999px;
-  padding: .6rem 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0, 105, 158, .24);
-  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  display:inline-block; background:transparent; color:#fff;
+  border:1px solid rgba(255,255,255,.35); border-radius:999px;
+  padding:.6rem 1.2rem; font-weight:900; letter-spacing:.6px; cursor:pointer;
+  text-transform:uppercase;
 }
-.more-btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0, 105, 158, .28); }
+#ventas .more-btn{ color:var(--text-dark); border-color:rgba(0,0,0,.28) }
+.more-btn:hover{ filter:brightness(1.05) }
 
-/* Limitar a 3 tarjetas inicialmente */
+/* Mostrar 3 tarjetas y luego expandir */
 #destacadas .grid .card:nth-child(n+4),
 #alquileres .grid .card:nth-child(n+4),
-#ventas .grid .card:nth-child(n+4){
-  display: none;
-}
-
-/* Cuando la sección está expandida, mostrar todas */
+#ventas .grid .card:nth-child(n+4){ display:none }
 #destacadas.expanded .grid .card,
 #alquileres.expanded .grid .card,
-#ventas.expanded .grid .card{
-  display: flex !important;
-}
+#ventas.expanded .grid .card{ display:flex !important }
 
-/* Badges por sección (opcional) */
-#destacadas .card::before,
-#alquileres .card::before,
-#ventas .card::before{
-  content: "";
-  position: absolute;
-  top: 12px; left: 12px;
-  padding: .28rem .6rem;
-  font-size: .78rem;
-  font-weight: 700;
-  border-radius: 999px;
-  letter-spacing: .4px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+/* =======================
+   FOOTER
+   ======================= */
+.footer{
+  background: var(--brand-gold-2);
+  color:#111; text-align:center; padding:18px 10px; margin-top:36px;
+  font-weight:700; letter-spacing:.5px;
 }
-#destacadas .card{ border-top: 4px solid #fca311; }
-#destacadas .card::before{ content:"⭐ Destacada"; background: linear-gradient(135deg,#ffd166,#fca311); color:#432a00; }
-#alquileres .card{ border-top: 4px solid var(--prim, #00699e); }
-#alquileres .card::before{ content:"Alquiler"; background: var(--prim,#00699e); color:#fff; }
-#ventas .card{ border-top: 4px solid var(--sec, #c1d72e); }
-#ventas .card::before{ content:"Venta"; background: var(--sec,#c1d72e); color: var(--dark,#091337); }
+.footer a{ color:#111; text-decoration:underline }
+.footer a:hover{ opacity:.8 }
 
-/* Responsive */
-@media (max-width: 640px){
-  #destacadas h2, #alquileres h2, #ventas h2{ font-size: 1.5rem; }
-  #destacadas .grid, #alquileres .grid, #ventas .grid{
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+/* =======================
+   RESPONSIVE
+   ======================= */
+@media (max-width: 1024px){
+  .hero{min-height:360px}
+  .hero h1{font-size:30px}
+}
+@media (max-width: 760px){
+  .topbar{flex-direction:column; align-items:flex-start}
+  .menu{flex-wrap:wrap}
+  .about.card{padding:18px}
+  #destacadas .grid,#alquileres .grid,#ventas .grid{grid-template-columns:1fr}
+  .hero{min-height:300px}
 }

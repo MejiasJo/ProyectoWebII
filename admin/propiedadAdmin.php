@@ -10,7 +10,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 require_once __DIR__ . '/../includes/verificacionrol.php';
 session_start();
 if (!isAdmin()) {
-    header('Location: ../login.php');
+  header('Location: ../login.php');
 }
 
 
@@ -97,9 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->execute()) {
       $nuevoId = $stmt->insert_id;
       $msg = "✅ Propiedad creada (ID: $nuevoId).";
-    
     } else {
-     
+
       $msg = "❌ Error al insertar: " . $stmt->error;
     }
     $stmt->close();
@@ -113,46 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="../assets/admin-propiedad.css">
   <title>Crear Propiedad</title>
-  <style>
-    body {
-      font-family: system-ui, Arial, sans-serif;
-      max-width: 900px;
-      margin: 24px auto;
-      padding: 0 16px
-    }
-
-    form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      background: #f7f7f9;
-      padding: 16px;
-      border-radius: 10px
-    }
-
-    form>div {
-      display: flex;
-      flex-direction: column
-    }
-
-    textarea {
-      min-height: 110px
-    }
-
-    .full {
-      grid-column: 1 / -1
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px
-    }
-
-    .msg {
-      margin: 10px 0
-    }
-  </style>
 </head>
 
 <body>
@@ -209,73 +170,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label>Precio *</label>
       <input type="number" name="precio" value="0" min="0" step="0.01" required>
 
-    <div>
-      <label>Imagen *</label>
-      <input type="file" name="imagen" accept="image/*">
-    </div>
+      <div>
+        <label>Imagen *</label>
+        <input type="file" name="imagen" accept="image/*">
+      </div>
 
-    <div class="full actions">
-      <button type="submit">Guardar</button>
-      <button><a href="../index.php">Volver al inicio</a></button>
-    </div>
+      <div class="full actions">
+        <button type="submit">Guardar</button>
+         <a class="btn btn-ghost" href="javascript:history.back()">Volver↩</a>
+      </div>
   </form>
 
   <section class="bloque">
-<?php
-$conn = conectar();
+    <?php
+    $conn = conectar();
 
-$sql = "SELECT p.*, t.nombre AS tipo_nombre, u.nombre AS agente_nombre
+    $sql = "SELECT p.*, t.nombre AS tipo_nombre, u.nombre AS agente_nombre
         FROM propiedades p
         JOIN tipo_alquiler t ON p.id_tipo = t.id
         JOIN usuario u ON p.agente_id = u.id
         ORDER BY p.id DESC";
 
-$resultado = $conn->query($sql);
+    $resultado = $conn->query($sql);
 
-if ($resultado->num_rows > 0): ?>
-  <h4>Lista de propiedades</h4>
-  <table border="1" cellpadding="6" cellspacing="0" style="width:100%;border-collapse:collapse">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Título</th>
-        <th>Tipo</th>
-        <th>Agente</th>
-        <th>Destacada</th>
-        <th>Ubicación</th>
-        <th>Fecha</th>
-        <th>precio</th>
-        <th>Imagen</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php while ($row = $resultado->fetch_assoc()): ?>
-        <tr>
-          <td><?= $row['id'] ?></td>
-          <td><?= htmlspecialchars($row['titulo']) ?></td>
-          <td><?= htmlspecialchars($row['tipo_nombre']) ?></td>
-          <td><?= htmlspecialchars($row['agente_nombre']) ?></td>
-          <td><?= $row['destacada'] ? '✅' : '❌' ?></td>
-          <td><?= htmlspecialchars($row['ubicacion']) ?></td>
-          <td><?= htmlspecialchars($row['fecha_pub']) ?></td>
-          <td><?= htmlspecialchars($row['precio']) ?></td>
-          <td>
-            <img src="../<?= htmlspecialchars($row['imagen']) ?>" alt="img" style="width:80px;height:60px;object-fit:cover">
-          </td>
-          <td>
-            <a href="editarPropiedad.php?id=<?= $row['id'] ?>">Editar</a> | 
-            <a href="eliminarPropiedad.php?id=<?= $row['id'] ?>" 
-               onclick="return confirm('¿Seguro que quieres eliminar esta propiedad?');">Eliminar</a>
-          </td>
-        </tr>
-      <?php endwhile; ?>
-    </tbody>
-  </table>
-<?php else: ?>
-  <p>No hay propiedades registradas.</p>
-<?php endif; ?>
-</section>
+    if ($resultado->num_rows > 0): ?>
+      <h4>Lista de propiedades</h4>
+      <table border="1" cellpadding="6" cellspacing="0" style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Agente</th>
+            <th>Destacada</th>
+            <th>Ubicación</th>
+            <th>Fecha</th>
+            <th>precio</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while ($row = $resultado->fetch_assoc()): ?>
+            <tr>
+              <td><?= $row['id'] ?></td>
+              <td><?= htmlspecialchars($row['titulo']) ?></td>
+              <td><?= htmlspecialchars($row['tipo_nombre']) ?></td>
+              <td><?= htmlspecialchars($row['agente_nombre']) ?></td>
+              <td><?= $row['destacada'] ? '✅' : '❌' ?></td>
+              <td><?= htmlspecialchars($row['ubicacion']) ?></td>
+              <td><?= htmlspecialchars($row['fecha_pub']) ?></td>
+              <td><?= htmlspecialchars($row['precio']) ?></td>
+              <td>
+                <img src="../<?= htmlspecialchars($row['imagen']) ?>" alt="img" style="width:80px;height:60px;object-fit:cover">
+              </td>
+              <td class="acciones">
+                <a class="btn btn-ghost btn-sm btn-edit" href="editarPropiedad.php?id=<?= $row['id'] ?>">Editar</a>
+                <a class="btn btn-danger btn-sm btn-del" href="eliminarPropiedad.php?id=<?= $row['id'] ?>"
+                  onclick="return confirm('¿Seguro que quieres eliminar esta propiedad?');">Eliminar</a>
+              </td>
+
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    <?php else: ?>
+      <p>No hay propiedades registradas.</p>
+    <?php endif; ?>
+  </section>
 
 
 

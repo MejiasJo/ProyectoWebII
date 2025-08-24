@@ -105,22 +105,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<title>Editar Propiedad</title>
-<style>
-  body{font-family:system-ui,Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px}
-  form{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#f7f7f9;padding:16px;border-radius:10px}
-  form > div{display:flex;flex-direction:column}
-  textarea{min-height:110px}
-  .full{grid-column:1 / -1}
-  .actions{display:flex;gap:10px;align-items:center}
-  .msg{margin:10px 0}
-  img.preview{max-width:100%;border-radius:8px}
-  a.btn{display:inline-block;padding:8px 12px;background:#00699e;color:#fff;text-decoration:none;border-radius:6px}
-</style>
+  <meta charset="utf-8">
+  <title>Editar Propiedad</title>>
+  <link rel="stylesheet" href="../assets/admin-edit.css">
 </head>
 <body>
   <h1>Editar Propiedad #<?= (int)$prop['id'] ?></h1>
+
   <?php if(!empty($msg)): ?><div class="msg"><?= $msg ?></div><?php endif; ?>
 
   <p><img class="preview" src="../<?= htmlspecialchars($prop['imagen']) ?>" alt="Imagen actual"></p>
@@ -178,16 +169,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div>
       <label>Precio *</label>
       <input type="number" name="precio" value="<?= htmlspecialchars($prop['precio']) ?>" min="0" step="0.01" required>
+    </div> <!-- 👈 este cierre FALTABA -->
 
-    <div>
+    <div class="full file-row">
       <label>Reemplazar imagen</label>
-      <input type="file" name="imagen" accept="image/*">
+      <input class="file" type="file" name="imagen" accept="image/*">
     </div>
 
     <div class="full actions">
       <button type="submit">Guardar cambios</button>
-      <a class="btn" href="../propiedad.php?id=<?= (int)$prop['id'] ?>">Ver detalle</a>
-      <a class="btn" href="javascript:history.back()">Volver</a>
+      <a class="btn btn-ghost" href="../propiedad.php?id=<?= (int)$prop['id'] ?>">Ver detalle</a>
+      <a class="btn btn-ghost" href="javascript:history.back()">Volver</a>
     </div>
   </form>
 </body>

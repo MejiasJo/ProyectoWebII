@@ -8,10 +8,12 @@ if ($id <= 0) {
 }
 
 $sql = "
-  SELECT p.id, p.titulo, p.descripcion, p.ubicacion, p.fecha_pub, p.precio,
-         p.imagen,
-         u.nombre AS agente, u.telefono AS agente_tel, u.email AS agente_email,
-         t.nombre AS tipo
+  SELECT 
+    p.id, p.titulo, p.descripcion, p.ubicacion, p.fecha_pub, p.precio,
+    p.imagen,
+    p.lat, p.lng,                       /* <— añadí lat/lng si existen en tu tabla */
+    u.nombre AS agente, u.telefono AS agente_tel, u.email AS agente_email,
+    t.nombre AS tipo
   FROM propiedades p
   JOIN usuario u ON p.agente_id = u.id
   JOIN tipo_alquiler t ON p.id_tipo = t.id
@@ -35,6 +37,7 @@ if (!$prop) {
   <title><?= htmlspecialchars($prop['titulo']) ?> - Detalles</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
   <style>
     body {
       font-family: system-ui, Arial, sans-serif;
@@ -54,7 +57,7 @@ if (!$prop) {
       background: #fff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1)
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .1)
     }
 
     img.main {
@@ -70,7 +73,7 @@ if (!$prop) {
 
     .meta {
       color: #666;
-      font-size: 0.9em;
+      font-size: .9em;
       margin-bottom: 15px
     }
 
@@ -93,6 +96,33 @@ if (!$prop) {
       text-decoration: none;
       font-weight: bold
     }
+
+    #mapWrap {
+      margin-top: 18px
+    }
+
+    #mapView {
+      height: 360px;
+      border-radius: 10px;
+      overflow: hidden
+    }
+
+    .map-help {
+      font-size: .9em;
+      color: #555;
+      margin-top: 8px
+    }
+
+    .gmap-link {
+      display: inline-block;
+      margin-top: 8px
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
   </style>
 </head>
 
@@ -104,26 +134,26 @@ if (!$prop) {
       <p class="meta">
         Tipo: <?= htmlspecialchars(ucfirst($prop['tipo'])) ?> |
         Publicado el <?= htmlspecialchars($prop['fecha_pub']) ?> |
-        Ubicación: <?= htmlspecialchars($prop['ubicacion']) ?>
-        Precio: <?= htmlspecialchars($prop['precio']) ?> €
+        Ubicación: <?= htmlspecialchars($prop['ubicacion']) ?> |
+        Precio: ₡<?= htmlspecialchars($prop['precio']) ?>
       </p>
+
       <div class="grid">
         <div>
           <h2>Descripción</h2>
           <p><?= nl2br(htmlspecialchars($prop['descripcion'])) ?></p>
+
+          <div id="mapWrap">
+            <div id="mapView"></div>
+            <div class="map-help">
+              <?php
+              $addr = trim($prop['ubicacion'] ?? '');
+              $gmap = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($addr);
+              ?>
+            </div>
+          </div>
         </div>
-        <?php if (!empty($prop['lat']) && !empty($prop['lng'])): ?>
-          <div id="mapView" style="height:360px;border-radius:10px;overflow:hidden;"></div>
-          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-          <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-          <script>
-            const m = L.map('mapView').setView([<?= $prop['lat'] ?>, <?= $prop['lng'] ?>], 16);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 19
-            }).addTo(m);
-            L.marker([<?= $prop['lat'] ?>, <?= $prop['lng'] ?>]).addTo(m);
-          </script>
-        <?php endif; ?>
+
         <div class="agente">
           <h3>Agente</h3>
           <p><strong><?= htmlspecialchars($prop['agente']) ?></strong></p>
@@ -136,8 +166,65 @@ if (!$prop) {
     </div>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+  <script>
+    (function() {
+      const mapEl = document.getElementById('mapView');
+      if (!mapEl) return;
 
+      const hasLat = <?= isset($prop['lat']) && $prop['lat'] !== null && $prop['lat'] !== '' ? 'true' : 'false' ?>;
+      const hasLng = <?= isset($prop['lng']) && $prop['lng'] !== null && $prop['lng'] !== '' ? 'true' : 'false' ?>;
+      const latVal = <?= isset($prop['lat']) && is_numeric($prop['lat']) ? (float)$prop['lat'] : 'null' ?>;
+      const lngVal = <?= isset($prop['lng']) && is_numeric($prop['lng']) ? (float)$prop['lng'] : 'null' ?>;
+      const direccion = <?= json_encode($prop['ubicacion'] ?? '') ?>;
 
+      const map = L.map('mapView', {
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      function setMarker(lat, lng, label) {
+        map.setView([lat, lng], 16);
+        const m = L.marker([lat, lng]).addTo(map);
+        if (label) {
+          m.bindPopup(label).openPopup();
+        }
+      }
+
+      if (hasLat && hasLng && latVal !== null && lngVal !== null) {
+        setMarker(latVal, lngVal, direccion || 'Ubicación');
+      } else if (direccion) {
+        const url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(direccion);
+        fetch(url, {
+            headers: {
+
+            }
+          })
+          .then(r => r.json())
+          .then(data => {
+            if (Array.isArray(data) && data.length) {
+              const {
+                lat,
+                lon,
+                display_name
+              } = data[0];
+              setMarker(parseFloat(lat), parseFloat(lon), display_name || direccion);
+            } else {
+              map.setView([9.7489, -83.7534], 7);
+            }
+          })
+          .catch(() => {
+            map.setView([9.7489, -83.7534], 7);
+          });
+      } else {
+        map.setView([9.7489, -83.7534], 7);
+      }
+    })();
+  </script>
 </body>
 
 </html>

@@ -1,7 +1,4 @@
 <?php
-
-/* ================== Introduccion ================== */
-
 function getConfig($conn) {
     $sql = "SELECT * FROM configuracion WHERE id=1 LIMIT 1";
     $result = $conn->query($sql);

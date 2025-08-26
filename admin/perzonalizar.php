@@ -26,7 +26,7 @@ $cfg = getConfig($conn);
 <head>
     <meta charset="UTF-8">
     <title>Personalizar Inicio</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/usuarios.css">
     <style>
         body { max-width: 700px; margin: 2em auto; font-family: sans-serif; }
         form { background: #fff; padding: 2em; border-radius: 8px; }
@@ -38,7 +38,6 @@ $cfg = getConfig($conn);
     </style>
 </head>
 <body>
-    <button><a href="./dashboard.php">Volver</a></button>
     <h1>Personalizar Página de Inicio</h1>
     <?php if($msg): ?>
         <div class="msg"><?= htmlspecialchars($msg) ?></div>
@@ -110,6 +109,7 @@ $cfg = getConfig($conn);
         </label>
         <button type="submit">Guardar cambios</button>
     </form>
-    <p><a href="../index.php">← Volver al inicio</a></p>
+    <button><a href="./dashboard.php">↩ Volver</a></button>
+    <button><a href="../index.php">↩ Volver al inicio</a></button>
 </body>
 </html>

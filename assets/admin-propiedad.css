@@ -125,7 +125,7 @@ button[type="submit"]:hover, .btn-primary:hover{ transform:translateY(-2px); fil
 
 /* Ghost (ver/volver/editar) */
 .btn-ghost{
-  background: rgba(15,21,64,.06); color:#d9e0ff; border:1px solid #2e3a78;
+  background: rgba(16, 22, 70, 0.6); color:#d9e0ff; border:1px solid #2e3a78;
 }
 .btn-ghost:hover{ background:#1a244f }
 

@@ -287,7 +287,7 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
       <!-- Formulario de contacto -->
       <div class="contact-form">
         <h3>Contáctanos</h3>
-        <form>
+        <form >
           <label for="nombre">Nombre:</label> 
           <input type="text" name="nombre" id="nombre" required> 
           <label for="email">Email:</label> 

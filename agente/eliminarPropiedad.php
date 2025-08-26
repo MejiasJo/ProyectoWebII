@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/conexion.php';
 require_once __DIR__ . '/../includes/verificacionrol.php';
 
 checkSession('../login.php');
-if (!isAngente() && !isAdmin()) { header('Location: ../login.php'); exit(); }
+if (!isAngente()) { header('Location: ../login.php'); exit(); }
 
 $conn = conectar();
 $id = (int)($_GET['id'] ?? 0);

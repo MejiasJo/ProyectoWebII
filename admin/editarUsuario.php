@@ -17,27 +17,28 @@ if (getUsuario($conn, $_GET['id'])->num_rows > 0) {
 }
 $conn->close();
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST['actulizar'] == 1) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST['actulizar'] == 1) {
     $id = $_GET['id'];
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
     $user = $_POST['user'];
     $rol = $_POST['rol'];
-    
+    $primer = $_POST['primer_Ing'];
+
     $conn = conectar();
 
     $_POST['actulizar'] = 0;
     if (!empty($_POST['pass'])) {
         $pass = encryptPassword($_POST['pass']);
-        $resultado = updateUsuarioComplento($conn, $id, $nombre, $telefono, $email, $user, $pass, $rol, 1);
+        $resultado = updateUsuarioComplento($conn, $id, $nombre, $telefono, $email, $user, $pass, $rol, $primer);
     } else {
-        $resultado = updateUsuarioSinPass($conn, $id, $nombre, $telefono, $email, $user, $rol);
+        $resultado = updateUsuarioSinPass($conn, $id, $nombre, $telefono, $email, $user, $rol, $primer);
     }
 
     $mensaje = $resultado ? 'Usuario actualizado exitosamente' : 'Error al actualizar el usuario';
     $tipo = $resultado ? 'success' : 'danger';
-    
+
     header('Location: ./usuarios.php?alert=' . $tipo . '&message=' . urlencode($mensaje));
     exit();
 }
@@ -78,6 +79,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
                         </span>
                     </div>
                 </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" name="primer_Ing" id="primer_Ing" value="1" title="Si desea activar la renovacion de contraseña en el siguiente ingreso, marque la casilla">
+                    <label for="primer_Ing">¿Activar renovacion de contraseña?</label>
+                </div>
+
                 <label for="rol">Rol:</label>
                 <select name="rol" id="rol" required>
                     <?php

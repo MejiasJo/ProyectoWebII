@@ -109,12 +109,12 @@ function updateUsuarioComplento($conn, $id, $nombre, $telefono, $email, $usuario
     return false;
 }
 
-function updateUsuarioSinPass($conn, $id, $nombre, $telefono, $email, $usuario, $privilegio){
+function updateUsuarioSinPass($conn, $id, $nombre, $telefono, $email, $usuario, $privilegio, $primerAcceso){
     $sql = "UPDATE usuario 
-            SET nombre = ?, telefono = ?, email = ?, usuario = ?, privilegio = ? 
+            SET nombre = ?, telefono = ?, email = ?, usuario = ?, privilegio = ?, primerIngreso = ? 
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssii", $nombre, $telefono, $email, $usuario, $privilegio, $id);
+    $stmt->bind_param("ssssiii", $nombre, $telefono, $email, $usuario, $privilegio, $primerAcceso, $id);
     if ($stmt->execute()){
         $stmt->close();
         return true;

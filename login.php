@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login']) && $_POST['l
     $pass = $_POST['pass'] ?? '';
 
     $conn = conectar();
-    $usuario = loginUsuario($conn, $user, $pass); // Debe hacer password_verify internamente
+    $usuario = loginUsuario($conn, $user, $pass);
 
     if ($usuario) {
         session_regenerate_id(true);
@@ -29,12 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login']) && $_POST['l
         $_SESSION['usuario_id']      = (int)$usuario['id'];
         $_SESSION['usuario_nombre']  = $usuario['nombre'];
         $_SESSION['privilegio']      = (int)$usuario['privilegio'];
-
+        $_SESSION['primer_ingreso']   = (int)$usuario['primerIngreso'];
         $_SESSION['usuario']         = $usuario['usuario'] ?? $user;
 
-        if (isAdmin())   { header('Location: ./admin/dashboard.php');  exit; }
-        if (isAngente()) { header('Location: ./agente/dashboard.php'); exit; }
-
+        if (isPrimerIngreso()) {
+            if (isAdmin())   { header('Location: ./admin/editarUsuario.php?id='.$_SESSION['usuario_id']);  exit; }
+            if (isAngente()) { header('Location: ./agente/editarUsuario?id='.$_SESSION['usuario_id']); exit; }
+        } else {
+            if (isAdmin())   { header('Location: ./admin/dashboard.php');  exit; }
+            if (isAngente()) { header('Location: ./agente/dashboard.php'); exit; }
+        }
         header('Location: ./index.php'); exit;
     } else {
         alertMenssage("Usuario o contraseña incorrectos", "danger");

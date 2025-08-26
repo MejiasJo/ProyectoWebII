@@ -16,3 +16,8 @@ function isAngente()
 {
     return isset($_SESSION['privilegio']) && $_SESSION['privilegio'] == 2;
 }
+
+function isPrimerIngreso()
+{
+    return isset($_SESSION['primer_ingreso']) && $_SESSION['primer_ingreso'] == 1;
+}

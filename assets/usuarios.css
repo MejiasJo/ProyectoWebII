@@ -91,6 +91,31 @@ select:focus {
     box-shadow: 0 0 5px var(--shadow-focus);
 }
 
+.checkbox-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+    order: -1; /* Asegura que siempre esté primero */
+}
+
+.checkbox-container label {
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    flex: 1;
+}
+
 /* =======================
    BOTONES
    ======================= */

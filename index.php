@@ -314,7 +314,7 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
     
   </footer>
   <div class="copyright">
-      <p>© Derechos Reservados <?= date('Y') ?> — <a href="admin/propiedadAdmin.php">Personalizar</a></p>
+      <p>© Derechos Reservados <?= date('Y') ?></p>
     </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {

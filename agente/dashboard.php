@@ -32,7 +32,7 @@ if (!isAngente()) {
             <article class="card">
                 <h3>Gestión Propiedades</h3>
                 <img src="../assets/img/casa.png" alt="">
-                <button><a href="./propiedades.php" class="btn">Ir a Propiedades</a></button>
+                <button><a href="./propiedad.php" class="btn">Ir a Propiedades</a></button>
             </article>
         </section>
         <button><a href="../index.php">↩ Volver</a></button>

@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $stmt->execute();
 
-    header('Location: ./propiedadAdmin.php'); exit();
+    header('Location: ./propiedad.php'); exit();
 }
 ?>
 <!DOCTYPE html>
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <button type="submit">Guardar</button>
-      <a href="./propiedadAdmin.php">Cancelar</a>
+      <a href="./propiedad.php">Cancelar</a>
     </form>
   </div>
 

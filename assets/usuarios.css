@@ -1,7 +1,16 @@
+
 :root {
-    --primary-color: #4CAF50;
-    --primary-hover: #45a049;
-    --danger-color: #ff4444;
+    /* Colores principales basados en alerts */
+    --primary-color: #2196F3;   /* Info */
+    --primary-hover: #1976D2;
+
+    --success-color: #4CAF50;   /* Success */
+    --success-hover: #45a049;
+
+    --warning-color: #FFC107;   /* Warning */
+    --warning-hover: #e0a800;
+
+    --danger-color: #f44336;    /* Danger */
     --danger-hover: #cc0000;
 
     --bg-color: #f5f5f5;
@@ -16,7 +25,7 @@
     --text-white: #ffffff;
 
     --shadow-color: rgba(0, 0, 0, 0.1);
-    --shadow-focus: rgba(76, 175, 80, 0.2);
+    --shadow-focus: rgba(33, 150, 243, 0.2); /* Azul de info */
 }
 
 * {
@@ -64,20 +73,7 @@ label {
     font-weight: bold;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--shadow-focus);
-}
-
+input,
 select {
     width: 100%;
     padding: 10px;
@@ -88,12 +84,16 @@ select {
     background-color: var(--bg-white);
 }
 
+input:focus,
 select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 5px var(--shadow-focus);
 }
 
+/* =======================
+   BOTONES
+   ======================= */
 button {
     padding: 10px 20px;
     border: none;
@@ -110,14 +110,14 @@ button:hover {
 }
 
 button[name="editar"] {
-    background-color: var(--primary-color);
+    background-color: var(--success-color);
     color: var(--text-white);
     padding: 5px 10px;
     font-size: 14px;
 }
 
 button[name="editar"]:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--success-hover);
 }
 
 button[name="eliminar"] {
@@ -131,6 +131,17 @@ button[name="eliminar"]:hover {
     background-color: var(--danger-hover);
 }
 
+button[name="advertencia"] {
+    background-color: var(--warning-color);
+    color: var(--text-white);
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+button[name="advertencia"]:hover {
+    background-color: var(--warning-hover);
+}
+
 button a {
     color: var(--text-white) !important;
     text-decoration: none;
@@ -142,6 +153,7 @@ button a {
 button[href="./dashboard.php"] {
     margin-bottom: 20px;
     background-color: var(--bg-white);
+    color: var(--text-color);
 }
 
 button[href="./dashboard.php"]:hover {
@@ -149,6 +161,9 @@ button[href="./dashboard.php"]:hover {
     opacity: 0.9;
 }
 
+/* =======================
+   TABLAS
+   ======================= */
 .tabla-usuarios {
     margin-top: 30px;
     overflow-x: auto;
@@ -192,6 +207,9 @@ tfoot td {
     text-align: right;
 }
 
+/* =======================
+   PASSWORD FIELD
+   ======================= */
 .password-field {
     position: relative;
     width: 100%;
@@ -218,7 +236,7 @@ tfoot td {
     justify-content: center;
     padding: 4px;
     transition: opacity 0.3s;
-    fill: var(--dark);
+    fill: var(--text-color);
     opacity: 0.6;
 }
 
@@ -230,7 +248,6 @@ tfoot td {
     width: 20px;
     height: 20px;
 }
-
 
 .toggle-password.active {
     opacity: 1;

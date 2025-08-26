@@ -140,14 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div>
       <label>Agente *</label>
-      <select name="agente_id" required>
-        <option value="">-- Selecciona --</option>
-        <?php while ($a = $agentes->fetch_assoc()): ?>
-          <option value="<?= (int)$a['id'] ?>"><?= htmlspecialchars($a['nombre']) ?></option>
-        <?php endwhile; ?>
-      </select>
+      <input type="text" name="agente" value="<?= htmlspecialchars($_SESSION['usuario_nombre']) ?>" disabled> 
+       <input type="hidden" name="agente_id" value="<?= (int)$_SESSION['usuario_id'] ?>">
     </div>
-
 
     <div>
       <label>¿Destacada?</label>

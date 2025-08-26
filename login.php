@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login']) && $_POST['l
 
         if (isPrimerIngreso()) {
             if (isAdmin())   { header('Location: ./admin/editarUsuario.php?id='.$_SESSION['usuario_id']);  exit; }
-            if (isAngente()) { header('Location: ./agente/editarUsuario?id='.$_SESSION['usuario_id']); exit; }
+            if (isAngente()) { header('Location: ./agente/editarUsuario.php?id='.$_SESSION['usuario_id']); exit; }
         } else {
             if (isAdmin())   { header('Location: ./admin/dashboard.php');  exit; }
             if (isAngente()) { header('Location: ./agente/dashboard.php'); exit; }

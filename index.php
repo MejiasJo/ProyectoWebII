@@ -14,7 +14,7 @@ if ($q !== '') {
     SELECT id, titulo, ubicacion,
            imagen      AS imagen_principal,
            descripcion AS descripcion_breve,
-           precio          AS precio
+           precio      AS precio
     FROM propiedades
     WHERE destacada = 1
       AND (descripcion LIKE ? OR ubicacion LIKE ?)
@@ -28,7 +28,7 @@ if ($q !== '') {
     SELECT id, titulo, ubicacion,
            imagen      AS imagen_principal,
            descripcion AS descripcion_breve,
-           precio          AS precio
+           precio      AS precio
     FROM propiedades
     WHERE id_tipo = 2
       AND (descripcion LIKE ? OR ubicacion LIKE ?)
@@ -38,12 +38,11 @@ if ($q !== '') {
   $stmt2->execute();
   $ventas = $stmt2->get_result();
 
-
   $stmt3 = $conn->prepare("
     SELECT id, titulo, ubicacion,
            imagen      AS imagen_principal,
            descripcion AS descripcion_breve,
-           precio           AS precio
+           precio      AS precio
     FROM propiedades
     WHERE id_tipo = 1
       AND (descripcion LIKE ? OR ubicacion LIKE ?)
@@ -87,16 +86,44 @@ if ($q !== '') {
 
 
 $tema = $cfg['tema'] ?? 'azul-amarillo-gris';
-$paleta = $tema === 'blanco-gris'
-  ? ['bg' => '#f2f2f2', 'fg' => '#333', 'prim' => '#939597', 'sec' => '#e9ecef', 'dark' => '#222']
-  : ['bg' => '#e9ecf4', 'fg' => '#091337', 'prim' => '#00699e', 'sec' => '#c1d72e', 'dark' => '#091337'];
 
+if ($tema === 'blanco-gris') {
+  $paleta = [
+    'bg'          => '#f2f2f2',
+    'fg'          => '#333333',
+    'prim'        => '#000000',
+    'sec'         => '#e9ecef',
+    'dark'        => '#222222',
+
+    'ventas'      => '#ffffff',
+    'alquileres'  => '#333333',
+    'destacadas'  => '#333333',
+
+    'topbar_bg'   => '#ffffff2c',
+    'topbar_fg'   => '#ffffff',
+    'contacto_bg' => '#ffffffff',
+    'contacto_fg' => '#222222',
+  ];
+} else {
+  $paleta = [
+    'bg'          => '#e9ecf4',
+    'fg'          => '#091337',
+    'prim'        => '#00699e',
+    'sec'         => '#ffe600ff',
+    'dark'        => '#091337',
+
+    'ventas'      => '#ffffff',
+    'alquileres'  => '#121633',
+    'destacadas'  => '#1a1e43',
+    'contacto_bg' => '#ffe600ff',
+    'contacto_fg' => '#1a1a1a',
+  ];
+}
 $logoColor   = !empty($cfg['icono_blanco'])    ? 'uploads/' . $cfg['icono_blanco']    : '';
 $logoNormal  = !empty($cfg['icono_principal']) ? 'uploads/' . $cfg['icono_principal'] : '';
 $bannerImg   = !empty($cfg['banner_imagen'])   ? 'uploads/' . $cfg['banner_imagen']   : '';
 $aboutImg    = !empty($cfg['quienes_img'])     ? 'uploads/' . $cfg['quienes_img']     : '';
 $mensaje     = $cfg['banner_mensaje'] ?? 'PERMITENOS AYUDARTE A CUMPLIR TUS SUEÑOS';
-
 
 function resaltar($texto, $q)
 {
@@ -113,23 +140,44 @@ function resaltar($texto, $q)
   <meta charset="utf-8">
   <title>UTN Solutions Real State</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <?php if ($logoNormal): ?>
-    <link rel="icon" href="<?= htmlspecialchars($logoNormal) ?>"><?php endif; ?>
-  <link rel="stylesheet" href="assets/index.css">
 
+  <?php if ($logoNormal): ?>
+    <link rel="icon" href="<?= htmlspecialchars($logoNormal) ?>">
+  <?php endif; ?>
+
+ 
+  <style>
+    :root {
+      
+      --bg: <?= $paleta['bg'] ?>;
+      --fg: <?= $paleta['fg'] ?>;
+      --prim: <?= $paleta['prim'] ?>;
+      --sec: <?= $paleta['sec'] ?>;
+      --dark: <?= $paleta['dark'] ?>;
+
+
+      --ventas-bg: <?= $paleta['ventas'] ?>;
+      --alquileres-bg: <?= $paleta['alquileres'] ?>;
+      --destacadas-bg: <?= $paleta['destacadas'] ?>;
+      --encabezado-bg: <?= $paleta['topbar'] ?>;
+    }
+  </style>
+
+  <link rel="stylesheet" href="assets/index.css">
 </head>
 
 <body>
-<div class="inicio-container">
-        <div class="inicio">
-            <?php if (empty($_SESSION['usuario'])): ?>
-                <div class="user-badge" title="Iniciar sesión"><a href="login.php">👤</a></div>
-            <?php else: ?>
-                <div class="user-badge" title="Mi cuenta"><a href="login.php">⏸</a></div>
-                <div class="user-badge" title="Salir"><a href="salir.php">📤</a></div>
-            <?php endif; ?>
-        </div>
+  <div class="inicio-container">
+    <div class="inicio">
+      <?php if (empty($_SESSION['usuario'])): ?>
+        <div class="user-badge" title="Iniciar sesión"><a href="login.php">👤</a></div>
+      <?php else: ?>
+        <div class="user-badge" title="Mi cuenta"><a href="login.php">⏸</a></div>
+        <div class="user-badge" title="Salir"><a href="salir.php">📤</a></div>
+      <?php endif; ?>
     </div>
+  </div>
+
   <header class="topbar">
     <div class="left">
       <?php if ($logoColor || $logoNormal): ?>
@@ -141,7 +189,6 @@ function resaltar($texto, $q)
         <?php if (!empty($cfg['facebook'])): ?>
           <a aria-label="Facebook" href="<?= htmlspecialchars($cfg['facebook']) ?>" target="_blank"><img src="./assets/img/facebook.png" alt=""></a>
         <?php endif; ?>
-
         <?php if (!empty($cfg['instagram'])): ?>
           <a aria-label="Instagram" href="<?= htmlspecialchars($cfg['instagram']) ?>" target="_blank"><img src="./assets/img/instagram.png" alt=""></a>
         <?php endif; ?>
@@ -150,6 +197,8 @@ function resaltar($texto, $q)
         <?php endif; ?>
       </div>
     </div>
+
+
 
     <nav class="menu">
       <a href="#">INICIO</a> <span>|</span>
@@ -160,21 +209,38 @@ function resaltar($texto, $q)
     </nav>
 
     <div class="right">
-      <!-- Buscador (action a index.php y valor preservado) -->
       <form class="search" action="index.php" method="get">
         <input type="text" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Buscar por descripción o ubicación…">
         <button type="submit" aria-label="Buscar">🔍</button>
       </form>
     </div>
+
+    <style>
+      :root {
+        --bg: <?= $paleta['bg'] ?>;
+        --fg: <?= $paleta['fg'] ?>;
+        --prim: <?= $paleta['prim'] ?>;
+        --sec: <?= $paleta['sec'] ?>;
+        --dark: <?= $paleta['dark'] ?>;
+
+        --ventas-bg: <?= $paleta['ventas'] ?>;
+        --alquileres-bg: <?= $paleta['alquileres'] ?>;
+        --destacadas-bg: <?= $paleta['destacadas'] ?>;
+
+        --topbar-bg: <?= $paleta['topbar_bg'] ?? '#0b0f1f' ?>;
+        --topbar-fg: <?= $paleta['topbar_fg'] ?? '#ffffff' ?>;
+        --contacto-bg: <?= $paleta['contacto_bg'] ?? 'rgb(234,230,230)' ?>;
+        --contacto-fg: <?= $paleta['contacto_fg'] ?? '#1a1a1a' ?>;
+      }
+    </style>
+
   </header>
 
-  <!-- HERO -->
   <section class="hero" style="background-image: url('<?= htmlspecialchars($bannerImg) ?>')">
     <div class="overlay"></div>
     <h1><?= htmlspecialchars(mb_strtoupper($mensaje)) ?></h1>
   </section>
 
-  <!-- QUIÉNES SOMOS -->
   <section class="about card" id="quienes">
     <h2>QUIÉNES SOMOS</h2>
     <div class="grid">
@@ -197,7 +263,6 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
     </div>
   </section>
 
-  <!-- DESTACADAS -->
   <section id="destacadas">
     <h2>Propiedades Destacadas <?= $q !== '' ? '— búsqueda' : '' ?></h2>
     <div class="grid">
@@ -215,8 +280,6 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
     <div class="more-wrap"><button class="more-btn" data-target="destacadas" aria-expanded="false">Ver más propiedades</button></div>
   </section>
 
-
-  <!-- VENTAS -->
   <section id="ventas">
     <h2>Propiedades en Venta <?= $q !== '' ? '— búsqueda' : '' ?></h2>
     <div class="grid">
@@ -234,8 +297,6 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
     <div class="more-wrap"><button class="more-btn" data-target="ventas" aria-expanded="false">Ver más propiedades</button></div>
   </section>
 
-
-  <!-- ALQUILERES -->
   <section id="alquileres">
     <h2>Propiedades en Alquiler <?= $q !== '' ? '— búsqueda' : '' ?></h2>
     <div class="grid">
@@ -255,14 +316,12 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
 
   <footer class="footer" id="contacto">
     <div class="footer-content">
-      <!-- Información de contacto -->
       <div class="contact-info">
         <p><img src="./assets/img/location.png" alt="Ubicación"><strong>Dirección;</strong> <?= htmlspecialchars($cfg['direccion'] ?? 'Cañas Guanacaste, 100 mts Este Parque de Cañas') ?></p>
         <p><img src="./assets/img/phone.png" alt="Telefono"><strong>Teléfono;</strong> <?= htmlspecialchars($cfg['telefono'] ?? '8890-2030') ?></p>
         <p><img src="./assets/img/letter.png" alt="correo"><strong>Email;</strong> <?= htmlspecialchars($cfg['email'] ?? 'info@utnrealestate.com') ?></p>
       </div>
 
-      <!-- Logo y redes sociales -->
       <div class="brand-section">
         <?php if ($logoColor || $logoNormal): ?>
           <img class="logo" src="<?= htmlspecialchars($logoColor ?: $logoNormal) ?>" alt="logo">
@@ -292,27 +351,24 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
         </div>
       </div>
 
-      <!-- Formulario de contacto -->
       <div class="contact-form">
         <h3>Contáctanos</h3>
-        <form >
-          <label for="nombre">Nombre:</label> 
-          <input type="text" name="nombre" id="nombre" required> 
-          <label for="email">Email:</label> 
-          <input type="email" name="email" id="email" required> 
-          <label for="telefono">Telefono:</label> 
-          <input type="text" name="telefono" id="telefono" required> 
+        <form>
+          <label for="nombre">Nombre:</label>
+          <input type="text" name="nombre" id="nombre" required>
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" required>
+          <label for="telefono">Telefono:</label>
+          <input type="text" name="telefono" id="telefono" required>
           <label for="mensaje">Mensaje:</label>
           <textarea name="mensaje" id="mensaje" required></textarea>
-          <input type="hidden" name="destino" id="destino" value="<?= htmlspecialchars($cfg['email'] ?? '')?>">
+          <input type="hidden" name="destino" id="destino" value="<?= htmlspecialchars($cfg['email'] ?? '') ?>">
           <button type="submit" id="btnEnvio">Enviar</button>
         </form>
       </div>
     </div>
-
-    <!-- Línea de copyright -->
-    
   </footer>
+
   <div class="copyright">
       <p>© Derechos Reservados <?= date('Y') ?></p>
     </div>
@@ -342,7 +398,7 @@ servicio que pueda encontrar en todos los lugares .')) ?></p>
     });
 
     const btnEnvio = document.getElementById('btnEnvio');
-    btnEnvio.addEventListener('click', function(e){
+    btnEnvio.addEventListener('click', function(e) {
       e.preventDefault();
       const email = document.getElementById('email').value;
       const nombre = document.getElementById('nombre').value;

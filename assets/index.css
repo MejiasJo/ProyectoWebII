@@ -1,21 +1,17 @@
-/* =======================
-   RESET & VARIABLES
-   ======================= */
+
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* Paleta del look (puedes ajustar) */
-  --brand-bg:#0b0f1f;         /* topbar */
-  --brand-deep:#121633;       /* fondo secciones oscuras */
-  --brand-surface:#1a1e43;    /* tarjeta en oscuro */
-  --brand-ink:#e9eaf6;        /* texto sobre oscuro */
-  --brand-gold:#ffd166;       /* acento dorado */
-  --brand-gold-2:#f4c430;     /* dorado secundario */
-  --light-bg:#e9eaee;         /* fondo claro secciones */
-  --light-card:#ffffff;       /* tarjeta en claro */
-  --text-dark:#1f2544;        /* texto principal neutral */
+  --brand-bg:#0b0f1f;         
+  --brand-deep:#121633;       
+  --brand-surface:#1a1e43;    
+  --brand-ink:#e9eaf6;        
+  --brand-gold:#ffd166;      
+  --brand-gold-2:#f4c430;    
+  --light-bg:#e9eaee;         
+  --light-card:#ffffff;       
+  --text-dark:#1f2544;        
   --muted:#4a4f62;
 
-  /* Hereda si ya defines estas desde PHP */
   --bg: var(--light-bg);
   --fg: var(--text-dark);
   --prim: var(--brand-surface);
@@ -29,9 +25,7 @@ body{
   font: 400 16px/1.6 "Segoe UI",system-ui,Arial,sans-serif;
 }
 
-/* =======================
-   TOPBAR
-   ======================= */
+
 .inicio-container {
     width: 100%;
     background: linear-gradient(180deg, #0c1023 0%, var(--brand-bg) 100%);
@@ -98,9 +92,6 @@ body{
     text-decoration: none;
 }
 
-/* =======================
-   HERO
-   ======================= */
 .hero{
   position:relative; min-height:420px;
   background: #0e1230 center/cover no-repeat fixed;
@@ -114,9 +105,7 @@ body{
   text-shadow:0 4px 20px rgba(0,0,0,.45);
 }
 
-/* =======================
-   QUIÉNES SOMOS (claro)
-   ======================= */
+
 .about.card{
   background:#f3f4f7; color:var(--text-dark);
   margin: 0 auto 34px; max-width:1100px;
@@ -134,27 +123,45 @@ body{
 .about .contact{list-style:none;margin-top:14px}
 .about .contact strong{color:var(--brand-deep)}
 
-/* =======================
-   SECCIONES DE PROPIEDADES
-   ======================= */
+
 section{scroll-margin-top:80px}
 
-/* Cabeceras */
+
+#destacadas{
+  background: var(--destacadas-bg);
+  color: var(--brand-ink);
+  padding: 48px 0 36px;
+}
+#ventas{
+  background: var(--ventas-bg);
+  color: var(--text-dark);
+  padding: 48px 0 36px;
+}
+#alquileres{
+  background: var(--alquileres-bg);
+  color: var(--brand-ink);
+  padding: 48px 0 36px;
+}
+
+
 #destacadas h2,#ventas h2,#alquileres h2{
   text-transform:uppercase; font-weight:900; letter-spacing:1px;
   text-align:center; margin-bottom:18px; font-size:26px;
 }
 
-/* Fondos alternados como en el mock */
-#destacadas, #alquileres{
-  background: var(--brand-deep);
-  color: var(--brand-ink);
-  padding: 48px 0 36px;
-}
-#ventas{
-  background: var(--light-bg);
-  color: var(--text-dark);
-  padding: 48px 0 36px;
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: linear-gradient(180deg, #0c1023 0%, var(--brand-bg) 100%);
+    color: var(--encabezado-bg);
+    padding: 14px 22px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.25);
+    flex-wrap: wrap;
 }
 
 /* Grids */
@@ -196,12 +203,10 @@ section{scroll-margin-top:80px}
 }
 #ventas .card p{ color:var(--muted); }
 
-/* Precio en dorado */
 #destacadas .card p strong,#alquileres .card p strong,#ventas .card p strong{
   color: var(--brand-gold); font-weight:900;
 }
 
-/* Botón CTA dentro de tarjeta (si lo usas) */
 #destacadas .card a,#alquileres .card a,#ventas .card a{
   align-self:flex-start; margin: auto 1rem 1rem;
   text-decoration:none; font-weight:800; letter-spacing:.5px;
@@ -212,7 +217,6 @@ section{scroll-margin-top:80px}
 #destacadas .card a:hover,#alquileres .card a:hover{ background:rgba(255,255,255,.1) }
 #ventas .card a:hover{ background:#f1f2f6 }
 
-/* ===== “Ver más propiedades” (botón de sección) ===== */
 .more-wrap{max-width:1100px;margin:16px auto 0;padding:0 16px;text-align:center}
 .more-btn{
   display:inline-block; background:transparent; color:#fff;
@@ -223,7 +227,6 @@ section{scroll-margin-top:80px}
 #ventas .more-btn{ color:var(--text-dark); border-color:rgba(0,0,0,.28) }
 .more-btn:hover{ filter:brightness(1.05) }
 
-/* Mostrar 3 tarjetas y luego expandir */
 #destacadas .grid .card:nth-child(n+4),
 #alquileres .grid .card:nth-child(n+4),
 #ventas .grid .card:nth-child(n+4){ display:none }
@@ -231,9 +234,7 @@ section{scroll-margin-top:80px}
 #alquileres.expanded .grid .card,
 #ventas.expanded .grid .card{ display:flex !important }
 
-/* =======================
-   FOOTER
-   ======================= */
+
 .footer {
     background: var(--brand-gold-2);
     color: var(--brand-ink);
@@ -332,7 +333,7 @@ section{scroll-margin-top:80px}
     width: 100%;
     padding: 12px;
     background: var(--dark);
-    color: var(--brand-gold-2);
+    color: #ede4e4;
     border: none;
     border-radius: 5px;
     font-weight: bold;
@@ -360,9 +361,7 @@ section{scroll-margin-top:80px}
     text-decoration: underline;
 }
 
-/* =======================
-   RESPONSIVE
-   ======================= */
+
 @media (max-width: 1024px){
   .hero{min-height:360px}
   .hero h1{font-size:30px}
@@ -379,4 +378,19 @@ section{scroll-margin-top:80px}
   .about.card{padding:18px}
   #destacadas .grid,#alquileres .grid,#ventas .grid{grid-template-columns:1fr}
   .hero{min-height:300px}
+}
+
+#contacto {
+  background: var(--contacto-bg);
+  color: var(--contacto-fg);
+}
+
+#contacto .contact-info p,
+#contacto .contact-info strong,
+#contacto .brand-text h2,
+#contacto .brand-text h3,
+#contacto .social-icons a,
+#contacto .contact-form h3,
+#contacto .contact-form label {
+  color: var(--contacto-fg);
 }

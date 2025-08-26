@@ -46,9 +46,7 @@
     color: var(--alert-danger);
 }
 
-/* =======================
-   ANIMACIONES
-   ======================= */
+
 @keyframes fadeIn {
     from {
         opacity: 0;

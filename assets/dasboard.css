@@ -1,15 +1,15 @@
 
 :root {
-    --primary-color: #2196F3;   /* Info */
+    --primary-color: #2196F3;   
     --primary-hover: #1976D2;
 
-    --success-color: #4CAF50;   /* Success */
+    --success-color: #4CAF50;   
     --success-hover: #45a049;
 
-    --warning-color: #FFC107;   /* Warning */
+    --warning-color: #FFC107;   
     --warning-hover: #e0a800;
 
-    --danger-color: #f44336;    /* Danger */
+    --danger-color: #f44336;    
     --danger-hover: #cc0000;
 
     --bg-color: #f0f0f0;
@@ -24,9 +24,7 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* =======================
-   BASE
-   ======================= */
+
 body {
     background-color: var(--bg-color);
     font-family: Arial, sans-serif;
@@ -46,9 +44,7 @@ body {
     text-align: center;
 }
 
-/* =======================
-   CARDS
-   ======================= */
+
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -91,9 +87,7 @@ body {
     background-color: var(--primary-hover);
 }
 
-/* =======================
-   BOTONES GLOBALES
-   ======================= */
+
 button {
     display: inline-block;
     margin: 10px;
@@ -139,9 +133,7 @@ button a {
     text-decoration: none;
 }
 
-/* =======================
-   TITULOS
-   ======================= */
+
 h1, h2, h3, h4 {
     font-family: 'Arial', sans-serif;
     color: var(--text-color);

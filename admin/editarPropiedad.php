@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lat        = isset($_POST['lat']) ? (float)$_POST['lat'] : ($prop['lat'] ?? null);
     $lng        = isset($_POST['lng']) ? (float)$_POST['lng'] : ($prop['lng'] ?? null);
 
-    // Imagen: reemplaza solo si se sube una nueva válida
     $imagen = $prop['imagen'];
     if (!empty($_FILES['imagen']['name']) && is_uploaded_file($_FILES['imagen']['tmp_name'])) {
         $allow = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
@@ -109,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="direccion">Dirección (texto):</label>
       <input type="text" id="direccion" name="ubicacion" value="<?= htmlspecialchars($prop['ubicacion']) ?>" required>
 
-      <!-- Coordenadas ocultas -->
       <input type="hidden" id="lat" name="lat" value="<?= htmlspecialchars((string)($prop['lat'] ?? '')) ?>">
       <input type="hidden" id="lng" name="lng" value="<?= htmlspecialchars((string)($prop['lng'] ?? '')) ?>">
 

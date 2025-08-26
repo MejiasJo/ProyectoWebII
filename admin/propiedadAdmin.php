@@ -8,7 +8,6 @@ if (!isAdmin()) { header('Location: ../login.php'); exit(); }
 
 $conn = conectar();
 
-// Cargar combos
 $tipos   = $conn->query("SELECT id, nombre FROM tipo_alquiler ORDER BY id");
 $agentes = $conn->query("SELECT id, nombre FROM usuario ORDER BY nombre");
 
@@ -17,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $titulo      = trim($_POST['titulo'] ?? '');
   $id_tipo     = (int)($_POST['id_tipo'] ?? 0);
 
-  // Si es agente, ignora lo que venga del form y usa el ID de la sesión
   if (isAngente()) {
     $agente_id = (int)$_SESSION['usuario_id'];
   } else {
@@ -30,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $fecha_pub   = $_POST['fecha_pub'] ?? date('Y-m-d');
   $precio      = (float)($_POST['precio'] ?? 0);
 
-  // Coordenadas desde el mapa
   $lat         = isset($_POST['lat']) ? (float)$_POST['lat'] : null;
   $lng         = isset($_POST['lng']) ? (float)$_POST['lng'] : null;
 
@@ -43,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_pub)) $errores[] = "Fecha inválida (YYYY-MM-DD).";
   if ($precio < 0)           $errores[] = "El precio no puede ser negativo.";
 
-  // Verificar FK de tipo
   $existeTipo = $conn->prepare("SELECT 1 FROM tipo_alquiler WHERE id=?");
   $existeTipo->bind_param("i", $id_tipo);
   $existeTipo->execute();
@@ -51,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($existeTipo->num_rows === 0) $errores[] = "El tipo seleccionado no existe.";
   $existeTipo->close();
 
-  // Verificar FK de agente
   $existeAgente = $conn->prepare("SELECT 1 FROM usuario WHERE id=?");
   $existeAgente->bind_param("i", $agente_id);
   $existeAgente->execute();
@@ -59,8 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($existeAgente->num_rows === 0) $errores[] = "El agente seleccionado no existe.";
   $existeAgente->close();
 
-  // Subida de imagen
-  $rutaImagen = 'uploads/placeholder.jpg'; // valor por defecto
+  $rutaImagen = 'uploads/placeholder.jpg'; 
   if (!empty($_FILES['imagen']['name'])) {
     $dir = __DIR__ . '/../uploads/propiedades';
     if (!is_dir($dir)) { @mkdir($dir, 0777, true); }
@@ -68,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $destinoFs = $dir . '/' . $nombreSeguro;
 
     if (move_uploaded_file($_FILES['imagen']['tmp_name'], $destinoFs)) {
-      $rutaImagen = 'uploads/propiedades/' . $nombreSeguro; // ruta relativa para BD
+      $rutaImagen = 'uploads/propiedades/' . $nombreSeguro; 
     } else {
       $errores[] = "No se pudo subir la imagen.";
     }
@@ -159,11 +153,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <textarea name="descripcion" required></textarea>
     </div>
 
-    <!-- Dirección + Mapa -->
     <div class="full">
       <label for="direccion">Dirección *</label>
       <input type="text" id="direccion" name="ubicacion" placeholder="Ej: San José, Costa Rica" required>
-      <!-- Coordenadas ocultas -->
       <input type="hidden" id="lat" name="lat">
       <input type="hidden" id="lng" name="lng">
       <button type="button" id="btnBuscar" style="margin-top:6px;">Buscar en mapa</button>
@@ -191,7 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </form>
 
-  <!-- Lista (la dejo como la tenías) -->
   <section class="bloque">
     <?php
     $sql = "SELECT p.*, t.nombre AS tipo_nombre, u.nombre AS agente_nombre
@@ -245,10 +236,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
   </section>
 
-  <!-- JS Mapa -->
+ 
   <script>
   (function(){
-    // Centro por defecto: San José, CR
     const defLat = 9.9281, defLng = -84.0907, defZoom = 12;
 
     const map = L.map('map').setView([defLat, defLng], defZoom);

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/consultasDB.php';
 require_once __DIR__ . '/config/conexion.php';
+session_start();
 
 $conn = conectar();
 $cfg = getConfig($conn);
@@ -119,7 +120,16 @@ function resaltar($texto, $q)
 </head>
 
 <body>
-
+<div class="inicio-container">
+        <div class="inicio">
+            <?php if (empty($_SESSION['usuario'])): ?>
+                <div class="user-badge" title="Iniciar sesión"><a href="login.php">👤</a></div>
+            <?php else: ?>
+                <div class="user-badge" title="Mi cuenta"><a href="login.php">⏸</a></div>
+                <div class="user-badge" title="Salir"><a href="salir.php">📤</a></div>
+            <?php endif; ?>
+        </div>
+    </div>
   <header class="topbar">
     <div class="left">
       <?php if ($logoColor || $logoNormal): ?>
@@ -155,8 +165,6 @@ function resaltar($texto, $q)
         <input type="text" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Buscar por descripción o ubicación…">
         <button type="submit" aria-label="Buscar">🔍</button>
       </form>
-      <div class="user-badge" title="Mi cuenta"><a href="login.php">Iniciar Sesión👤</a></div>
-      <div class="user-badge" title="Mi cuenta"><a href="salir.php">Cerrar Sesión📤</a></div>
     </div>
   </header>
 

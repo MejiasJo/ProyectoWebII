@@ -62,15 +62,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['actulizar']) && $_POST[
                 <label for="nombre">Nombre Completo:</label>
                 <input type="text" name="nombre" id="nombre" value="<?= $usuario['nombre'] ?>" required>
                 <label for="telefono">Telefono:</label>
-                <input type="text" name="telefono" id="telefono" pattern="^[0-9]{8,12}$" value="<?= $usuario['telefono'] ?>" required>
+                <input type="text" name="telefono" id="telefono" pattern="^[0-9]{8,12}$" value="<?= $usuario['telefono'] ?>" placeholder="Ingrese el número telefónico de 8 a 12 digitos" required>
                 <label for="email">Email:</label>
-                <input type="email" name="email" id="email" value="<?= $usuario['email'] ?>" required>
+                <input type="email" name="email" id="email" value="<?= $usuario['email'] ?>" placeholder="Ingrese un correo ejemplo: ejemplo@gmail.com" required>
                 <label for="user">Usuario:</label>
                 <input type="text" name="user" id="user" value="<?= $usuario['usuario'] ?>" required>
                 <div class="password-field">
                     <label for="pass">Contraseña:</label>
                     <div class="password-container">
-                        <input type="password" name="pass" id="pass">
+                        <input type="password" name="pass" id="pass" placeholder="Dejar en blanco para no cambiar">
                         <span class="toggle-password" onclick="togglePassword('pass')">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />

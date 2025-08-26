@@ -32,13 +32,34 @@ body{
 /* =======================
    TOPBAR
    ======================= */
-.topbar{
-  position:sticky; top:0; z-index:20;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:16px;
-  background: linear-gradient(180deg, #0c1023 0%, var(--brand-bg) 100%);
-  color:#fff; padding:14px 22px;
-  box-shadow:0 6px 24px rgba(0,0,0,.25);
+.inicio-container {
+    width: 100%;
+    background: linear-gradient(180deg, #0c1023 0%, var(--brand-bg) 100%);
+    padding: 8px 22px;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.inicio {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: linear-gradient(180deg, #0c1023 0%, var(--brand-bg) 100%);
+    color: #fff;
+    padding: 14px 22px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.25);
+    flex-wrap: wrap;
 }
 .topbar .left{display:flex;align-items:center;gap:18px}
 .logo{height:48px;width:auto;border-radius:6px;background:#fff;padding:4px}
@@ -60,8 +81,22 @@ body{
 }
 .search input{border:0;outline:0;padding:.45rem .6rem;background:transparent;color:#222}
 .search button{border:0;background:none;font-size:1.1rem;cursor:pointer;color:#333}
-.user-badge{font-size:1.1rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.35rem .65rem}
-.user-badge a{color:#fff;text-decoration:none}
+.user-badge {
+    font-size: 1.1rem;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px;
+    padding: .35rem .65rem;
+    transition: background-color 0.3s;
+}
+.user-badge a:hover {
+    background: rgba(255,255,255,.2);
+}
+
+.user-badge a {
+    color: #fff;
+    text-decoration: none;
+}
 
 /* =======================
    HERO
@@ -333,7 +368,13 @@ section{scroll-margin-top:80px}
   .hero h1{font-size:30px}
 }
 @media (max-width: 760px){
-  .topbar{flex-direction:column; align-items:flex-start}
+  .inicio-container {
+        padding: 8px 12px;
+    }
+  .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
   .menu{flex-wrap:wrap}
   .about.card{padding:18px}
   #destacadas .grid,#alquileres .grid,#ventas .grid{grid-template-columns:1fr}
